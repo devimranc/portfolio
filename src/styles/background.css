@@ -1,0 +1,32 @@
+@source "../**/*.{js,ts,jsx,tsx}";
+
+@theme {
+  --color-primary: #0a0a0a;
+  --color-midnight: #050505;
+  --color-navy: #171717;
+  --color-indigo: #262626;
+  --color-storm: #404040;
+  --color-aqua: #e5e5e5;
+  --color-mint: #d4d4d4;
+  --color-royal: #a3a3a3;
+  --color-lavender: #737373;
+  --color-fuchsia: #525252;
+  --color-coral: #f5f5f5;
+}
+
+html:has(.landing-background) {
+  background: #000000;
+  scroll-behavior: smooth;
+}
+
+html:has(.landing-background) body {
+  background: #000000;
+  color: white;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(.landing-background) {
+    scroll-behavior: auto;
+  }
+}
