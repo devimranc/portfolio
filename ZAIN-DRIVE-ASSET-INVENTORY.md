@@ -23,7 +23,7 @@ Entries under each project are ordered folders first, then files, A to Z, case-i
 | Character Rigging & Animation | `character-rigging` | 6 | 54 | 101 |
 | Product Modeling & Visualization | `product-modeling` | 8 | 31 | 126 |
 | Product Animation & Exploded Views | `product-animation` | 15 | 29 | 77 |
-| Unreal Engine | `unreal` | 3 | 15 | 30 |
+| Unreal Engine | `unreal` | 3 | 14 | 29 |
 | Architectural Visualization | `architecture` | 11 | 91 | 499 |
 | AI-Assisted Video & Animation | `ai-video` | 0 | 0 | 0 |
 | 2D Animation & Motion Design | `motion-2d` | 15 | 28 | 71 |
@@ -1202,7 +1202,7 @@ Work page id: `product-animation`. Projects: 15. Folders: 29. Files: 77.
 
 ## Unreal Engine
 
-Work page id: `unreal-vr`. Projects: 3. Folders: 15. Files: 30.
+Work page id: `unreal-vr`. Projects: 3. Folders: 14. Files: 29.
 
 - Rachel Rig/ — 2 folders, 5 files
   - Idle rig/
@@ -1215,7 +1215,7 @@ Work page id: `unreal-vr`. Projects: 3. Folders: 15. Files: 30.
   - HighresScreenshot00000.png
   - HighresScreenshot00001.png
   - SportsStadium - Unreal Editor 2026-03-27 14-52-30.mp4
-- VR work/ — 12 folders, 22 files
+- VR work/ — 11 folders, 21 files
   - 3D develop for game_/
     - video.mp4
   - Animal/
@@ -1240,8 +1240,6 @@ Work page id: `unreal-vr`. Projects: 3. Folders: 15. Files: 30.
       - image.png
     - Reference/
       - sample-image (1).jpg
-    - updated APK/
-      - MagnusGalleryV4.apk
   - Mobile game experience/
     - VR Mobile game .mp4
   - PhotoStudio map/

@@ -80,7 +80,7 @@ The older inventory categories are still published beside those new categories. 
 | 2. Character Animation Showcase | Same name | 4 | Present. One clip each. Exact copies also exist in Zain, and two of them also exist in Imran Drive. |
 | 3. Character Modeling and Rigging | Same name | 3 | Present. Galleries include a few stills beyond the four model links in the PDF. |
 | 4. MetaHuman and 3D Human Assets | Same name | 1 | Present. All 34 stills match Zain character folders. |
-| 5. VR Project | Same name | 1 | Present. The PDF links are reference, models, and animation. The site also shows environment stills and the APK. |
+| 5. VR Project | Same name | 1 | Present. The PDF links are reference, models, and animation. The site also shows environment stills. |
 | 6. Product Animation and Exploded Views | Same name | 8 | Present. One clip each. |
 | 7. Architectural Visualization | `architecture-showcase` | 2 | Present. Room sets are grouped. Two extra exterior sets are included. |
 | 8. AI-Assisted Video and Animation | `ai-assisted` | 7 | Present. Product shots also include seven extra Imran clips. |
@@ -96,7 +96,7 @@ These are not missing files. The site shows a wider set than the PDF’s individ
 - **Stylized / cartoon models.** The PDF lists four model links, the showcase, and one extra cartoon folder. The gallery shows all seven stills in `Cartoonish 2`, the showcase video, and the six `Cartoonish` webps.
 - **Interior.** The PDF lists each set separately: luxury kitchen, modern kitchen, bathroom sets 1 and 2, office sets 1 and 2, living room sets 1 and 2, and bedroom sets 1 and 2. The gallery combines those into six room links. The files are all there. Bathroom set 2 (4 files) and office set 2 (10 files) exist only in `Architectural Visualization`. The other 65 interior files are exact copies of Zain folders.
 - **Exterior.** The PDF links villas, house landscape, and the Japanese Zen garden. The villa link also includes `Villa Interior-Exterior` and `Villa Design.mp4`.
-- **VR.** The PDF says the links are the reference, the models, and an animation preview. It does not mention the APK. The gallery adds `PhotoStudio` environment stills and `MagnusGalleryV4.apk`. The APK exists only in `zain-drive/VR work/Magnus/updated APK/`.
+- **VR.** The PDF says the links are the reference, the models, and an animation preview. The gallery also adds `PhotoStudio` environment stills.
 - **Cinematic product shots.** The category folder contains one file, `final video (2).mp4`. The gallery also adds seven clips from `imran-drive/AI product animation/`. Those seven are different files, not copies of the final.
 - **Radar description.** The PDF ends the radar sentence with a period. The published summary does not.
 
@@ -122,7 +122,7 @@ The same work is reachable from more than one card.
 | Character Animation Showcase clips | Drive cards for `Character Animation` and `Character Animation2` | Amend, infiltration, monologue, and epic-environment clips |
 | Modeling and rigging projects | Drive cards for `Rigging Stuff` and `Character Models` | Dinosaur, bird, facial rig, cartoon-man rig, and cartoon stills |
 | MetaHuman | Still inside the `Character Models` drive card | All 34 stills |
-| VR Photo Gallery Environment | Still inside the `VR work` drive card | The 11 Magnus files, plus the APK and PhotoStudio stills |
+| VR Photo Gallery Environment | Still inside the `VR work` drive card | The 11 Magnus files, plus the PhotoStudio stills |
 | Sports brand animation | `Fictional Sport Brand.mp4` inside `zain-drive/CGI/Portrait/` | Exact copy, different filename |
 | Product animation categories | Two category titles | “Product Animation and Exploded Views” and “Product Animation & Exploded Views” are different bodies of work, but the names read as the same category |
 | Architectural Visualization | Two category titles | `architecture-showcase` is the two-project PDF category. `architecture` is the older Zain library |
@@ -155,7 +155,7 @@ These folders are exact copies of files kept elsewhere, and the website does not
 | `Product Animation` (8 clips) | `imran-drive/Puffer jacket.mp4` only. The other seven clips have no second copy |
 | `AI-Assisted Video and Animation` | Imran copies of the rain clip, `AI animation.mp4`, `character sheet.jpg`, `3D Brand Intro.mp4`, and `final video (2).mp4`. Also `zain-drive/CGI/Portrait/Fictional Sport Brand.mp4`, which matches `Sport Brand.mp4` |
 | `MetaHuman` | The matching stills in `zain-drive/Character Models`: `Full body human`, `Female character`, `Realistic Male Face`, and `3D  human`. Leave the rest of `Character Models` in place |
-| `VR Project` | The matching 11 files under `zain-drive/VR work/Magnus`. Keep the APK there. It has no second copy |
+| `VR Project` | The matching 11 files under `zain-drive/VR work/Magnus` |
 | `Architectural Visualization` | Do not archive this folder. Bathroom set 2 and office set 2 exist only here. The other 65 files also exist under `zain-drive/Interior & Exterior/Interior` |
 
 ### Copies inside Zain that are not a second library
@@ -176,7 +176,6 @@ These are duplicates within `zain-drive`, not a category-folder backup.
 
 - `zain-drive` as a whole. It is the library behind section 9 and behind several live galleries.
 - `imran-drive` as a whole. Rita scenes, AI product clips, the character model, and motion files are unique.
-- `MagnusGalleryV4.apk`. One copy only.
 - `Stinkin_Awesome_4K-001.mp4`, the large Rita episodes, and `imran-drive/8WYmgYcP4yOKldhCTQl8u.webm`. They are not duplicates. They are also not linked from the PDF’s numbered projects.
 - The Dorcas “wounded soldier with blood” clip. It is a different video from the AI soldier sequence.
 - The shorter `Idle animation.mp4` in `Character Animation2`. It is a different take from the Unreal rig idle.
@@ -187,4 +186,4 @@ These are duplicates within `zain-drive`, not a category-folder backup.
 2. Archive the extra copies listed above, not their parent folders.
 3. Decide whether the older duplicate cards should stay: AI environment, the featured architectural card, and the Zain drive cards that repeat sections 1–8.
 4. Fix the two Product Installation paths only when a website change is approved. The files themselves are present.
-5. Decide whether the VR APK, the PhotoStudio stills, the extra product-shot clips, and the merged interior links should stay, since they go beyond the PDF’s link list.
+5. Decide whether the PhotoStudio stills, the extra product-shot clips, and the merged interior links should stay, since they go beyond the PDF’s link list.

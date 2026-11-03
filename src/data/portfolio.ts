@@ -267,7 +267,7 @@ export const projects: Project[] = [
     category: "vr-project",
     featured: true,
     summary:
-      "Working from a provided reference, I created a photo-gallery environment and its 3D models, then integrated the environment into VR. I delivered an APK so the client could test the experience. The links include the APK, the reference, models, and an animation preview.",
+      "Working from a provided reference, I created a photo-gallery environment and its 3D models, then integrated the environment into VR. The links include the reference, models, and an animation preview.",
     details: [],
     media: [
       {

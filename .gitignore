@@ -39,7 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-public/data/zain-drive/Stinkin_Awesome_4K-001.mp4
 
 # Ignore APK files
 *.apk

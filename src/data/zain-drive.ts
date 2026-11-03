@@ -330,7 +330,6 @@ function vrProjectTree(slug: string): GalleryFolder | undefined {
         name: "Animation",
         children: [dataFile("VR Project/Pan animation.mkv")],
       },
-      folderSection("APK", "zain-drive/VR work/Magnus/updated APK", () => true),
       folderSection("Game development", "zain-drive/VR work/3D develop for game_", () => true),
       folderSection("Animal", "zain-drive/VR work/Animal", () => true),
       folderSection("Industrial bench", "zain-drive/VR work/Industrial bench", () => true),
