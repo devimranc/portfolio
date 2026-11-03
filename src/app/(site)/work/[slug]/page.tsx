@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 function ProjectFallback() {
   return (
-    <main className="bg-[#0c0e12]" aria-busy="true">
+    <main className="bg-[#1a2433]" aria-busy="true">
       <div className="grid gap-4 p-8 lg:grid-cols-[16rem_1fr]">
         <div className="h-24 bg-white/5" />
         <div className="h-80 bg-white/5" />

@@ -1,7 +1,18 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { mediaSrc } from "@/components/work/ProjectMedia";
-import { categoryLabel } from "@/data/portfolio";
+import { categoryLabel, type MediaItem } from "@/data/portfolio";
 import type { GalleryFile, GalleryFolder, WorkProject } from "@/data/zain-drive";
+import "@/styles/project-detail.css";
+
+const PAGE_SIZE = 6;
+const tabs = ["Models", "Videos", "References"] as const;
+type TabLabel = (typeof tabs)[number];
+
+type ListedFile = GalleryFile & { folder?: string };
 
 function assetLabel(name: string) {
   const extension = name.includes(".") ? name.split(".").pop() : "";
@@ -23,104 +34,7 @@ function needsDownload(file: GalleryFile) {
   return file.kind !== "image" && (file.kind !== "video" || extension === "mov" || extension === "mkv");
 }
 
-function GalleryAsset({ file }: { file: GalleryFile }) {
-  const src = mediaSrc(file.src);
-  const { extension } = assetLabel(file.name);
-  const download = needsDownload(file) ? (
-    <a href={src} download={file.name} className="mt-3 inline-block text-sm text-[#d5deea] underline-offset-4 hover:underline">
-      Download {file.name}
-    </a>
-  ) : null;
-
-  if (file.kind === "image") {
-    return (
-      <figure className="work-tile">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={src} alt={file.name} className="block h-auto w-full" loading="lazy" />
-      </figure>
-    );
-  }
-
-  if (file.kind === "video") {
-    return (
-      <figure className="work-tile bg-black">
-        <video className="block h-auto w-full bg-black" controls playsInline preload="none" aria-label={file.name}>
-          <source src={src} type={videoType(file.name)} />
-        </video>
-        {download ? <figcaption className="px-3 pb-3">{download}</figcaption> : null}
-      </figure>
-    );
-  }
-
-  if (file.kind === "audio") {
-    return (
-      <figure className="work-tile bg-[#1a2433] p-5">
-        <figcaption className="text-sm leading-snug text-[#f4f6f8]">{file.name}</figcaption>
-        <audio className="mt-4 w-full" controls preload="none" aria-label={file.name} src={src} />
-        {download}
-      </figure>
-    );
-  }
-
-  if (file.kind === "document") {
-    return (
-      <figure className="work-tile work-tile-span bg-[#1a2433] p-5">
-        <figcaption className="text-sm leading-snug text-[#f4f6f8]">{file.name}</figcaption>
-        <iframe title={file.name} src={src} className="mt-4 h-[36rem] w-full bg-white" />
-        {download}
-      </figure>
-    );
-  }
-
-  return (
-    <figure className="work-tile">
-      <a href={src} download={file.name} className="flex min-h-40 flex-col justify-between bg-[#1a2433] p-5 text-[#f4f6f8]">
-        <span className="text-xs tracking-[0.16em] text-[#d5deea]">{extension}</span>
-        <span className="mt-6 text-sm leading-snug">{file.name}</span>
-      </a>
-    </figure>
-  );
-}
-
-function fileCount(folder: GalleryFolder): number {
-  return folder.children.reduce((total, child) => {
-    if (child.type === "file") return total + 1;
-    return total + fileCount(child);
-  }, 0);
-}
-
-function FolderGallery({ folder, depth }: { folder: GalleryFolder; depth: number }) {
-  const folders = folder.children.filter((child): child is GalleryFolder => child.type === "folder");
-  const files = folder.children.filter((child): child is GalleryFile => child.type === "file");
-
-  return (
-    <section className={depth > 1 ? "ml-3 border-l border-white/10 pl-3" : undefined}>
-      {depth > 0 ? <h2 className="px-2 pt-6 pb-2 text-sm font-medium text-[#f4f6f8]">{folder.name}</h2> : null}
-      {folders.map((child) => (
-        <FolderGallery key={child.name} folder={child} depth={depth + 1} />
-      ))}
-      {files.length > 0 ? (
-        <div className="work-masonry">
-          {files.map((file) => (
-            <GalleryAsset key={file.src} file={file} />
-          ))}
-        </div>
-      ) : null}
-    </section>
-  );
-}
-
-type GallerySection = {
-  id: string;
-  label: string;
-  folder?: GalleryFolder;
-  file?: GalleryFile;
-};
-
-const groupedLabels = ["Videos", "Models", "References"] as const;
-type GroupedLabel = (typeof groupedLabels)[number];
-
-function groupFor(file: GalleryFile, parents: string[]): GroupedLabel {
+function groupFor(file: GalleryFile, parents: string[]): TabLabel {
   const context = `${parents.join(" ")} ${file.name}`.toLowerCase();
   if (context.includes("reference")) return "References";
   if (file.kind === "video") return "Videos";
@@ -131,8 +45,8 @@ function groupFor(file: GalleryFile, parents: string[]): GroupedLabel {
   return "Videos";
 }
 
-function professionalSections(folder: GalleryFolder): GallerySection[] {
-  const buckets: Record<GroupedLabel, GalleryFile[]> = { Videos: [], Models: [], References: [] };
+function collectTree(folder: GalleryFolder) {
+  const buckets: Record<TabLabel, ListedFile[]> = { Models: [], Videos: [], References: [] };
   const seen = new Set<string>();
 
   function walk(node: GalleryFolder, parents: string[]) {
@@ -144,144 +58,255 @@ function professionalSections(folder: GalleryFolder): GallerySection[] {
       const key = child.name.toLowerCase();
       if (seen.has(key)) continue;
       seen.add(key);
-      buckets[groupFor(child, parents)].push(child);
+      const label = groupFor(child, parents);
+      buckets[label].push({ ...child, folder: parents.length ? parents.join(" / ") : undefined });
     }
   }
 
   walk(folder, []);
-
-  return groupedLabels
-    .filter((label) => buckets[label].length > 0)
-    .map((label) => ({
-      id: label.toLowerCase(),
-      label,
-      folder: { type: "folder", name: label, children: buckets[label] },
-    }));
+  return buckets;
 }
 
-function gallerySections(folder: GalleryFolder, category: string): GallerySection[] {
-  if (category === "game-character") return professionalSections(folder);
-  return folder.children.map((child, index) => {
-    if (child.type === "folder") {
-      return { id: `${index}-${child.name}`, label: child.name, folder: child };
-    }
-    return { id: child.src, label: child.name, file: child };
-  });
+function collectMedia(media: MediaItem[]) {
+  const buckets: Record<TabLabel, ListedFile[]> = { Models: [], Videos: [], References: [] };
+  for (const item of media) {
+    const name = decodeURIComponent(item.src.split("/").pop() ?? item.alt);
+    const kind = item.kind === "file" ? "file" : item.kind;
+    const file: ListedFile = { type: "file", name, src: item.src, kind };
+    buckets[groupFor(file, [])].push(file);
+  }
+  return buckets;
 }
 
-function FlatGallery({ project }: { project: WorkProject }) {
+function pageList(current: number, total: number) {
+  if (total <= 5) return Array.from({ length: total }, (_, index) => index + 1);
+  if (current <= 3) return [1, 2, 3, "…", total] as const;
+  if (current >= total - 2) return [1, "…", total - 2, total - 1, total] as const;
+  return [1, "…", current, "…", total] as const;
+}
+
+function FilePreview({ file, expanded = false }: { file: ListedFile; expanded?: boolean }) {
+  const src = mediaSrc(file.src);
+  const { extension } = assetLabel(file.name);
+  const download = needsDownload(file) ? (
+    <a href={src} download={file.name}>
+      Download {file.name}
+    </a>
+  ) : null;
+
+  if (file.kind === "image") {
+    return <img src={src} alt={file.name} />;
+  }
+  if (file.kind === "video") {
+    return (
+      <video controls playsInline preload={expanded ? "metadata" : "none"} aria-label={file.name}>
+        <source src={src} type={videoType(file.name)} />
+      </video>
+    );
+  }
+  if (file.kind === "audio") {
+    return <audio controls preload="none" aria-label={file.name} src={src} />;
+  }
+  if (file.kind === "document") {
+    return <iframe title={file.name} src={src} className={expanded ? "h-[70vh] w-full bg-white" : "h-full w-full bg-white"} />;
+  }
   return (
-    <div className="work-masonry px-1 pb-6 sm:px-2 lg:py-2">
-      {project.media.map((item, index) => {
-        const name = decodeURIComponent(item.src.split("/").pop() ?? item.alt);
-        const { extension } = assetLabel(name);
-        if (item.kind === "image") {
-          return (
-            <figure key={item.src} className="work-tile work-rise" style={{ animationDelay: `${index * 40}ms` }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={mediaSrc(item.src)} alt={item.alt} className="block h-auto w-full" loading={index < 4 ? "eager" : "lazy"} />
-            </figure>
-          );
-        }
-        if (item.kind === "video") {
-          return (
-            <figure key={item.src} className="work-tile work-rise" style={{ animationDelay: `${index * 40}ms` }}>
-              <video className="block h-auto w-full bg-black" controls playsInline preload="metadata" aria-label={item.alt}>
-                <source src={mediaSrc(item.src)} />
-              </video>
-            </figure>
-          );
-        }
-        return (
-          <figure key={item.src} className="work-tile work-rise" style={{ animationDelay: `${index * 40}ms` }}>
-            <a href={mediaSrc(item.src)} className="flex min-h-40 flex-col justify-between bg-[#1a2433] p-5 text-[#f4f6f8]">
-              <span className="text-xs tracking-[0.16em] text-[#d5deea]">{extension}</span>
-              <span className="mt-6 text-sm leading-snug">{name}</span>
-            </a>
-          </figure>
-        );
-      })}
-    </div>
+    <a href={src} download={file.name}>
+      {extension} · {file.name}
+    </a>
+  );
+}
+
+function TabIcon({ label }: { label: TabLabel }) {
+  if (label === "Videos") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4">
+        <path fill="none" stroke="currentColor" strokeWidth="1.6" d="M4 7h10v10H4zM14 10.5l6-3v9l-6-3Z" />
+      </svg>
+    );
+  }
+  if (label === "Models") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4">
+        <path fill="none" stroke="currentColor" strokeWidth="1.6" d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4">
+      <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      <circle cx="12" cy="12" r="2" fill="currentColor" />
+    </svg>
   );
 }
 
 export function ProjectGallery({ project, asset }: { project: WorkProject; asset?: string }) {
-  const sections = project.tree ? gallerySections(project.tree, project.category) : [];
-  const files = project.tree
-    ? sections.reduce((total, section) => total + (section.folder ? fileCount(section.folder) : 1), 0)
-    : project.media.length;
-  const active = sections.find((section) => section.id === asset) ?? sections[0];
-  const categoryName = categoryLabel(project.category);
+  const router = useRouter();
+  const buckets = useMemo(
+    () => (project.tree ? collectTree(project.tree) : collectMedia(project.media)),
+    [project],
+  );
+  const totalFiles = tabs.reduce((total, label) => total + buckets[label].length, 0);
+  const initial = tabs.find((label) => label.toLowerCase() === asset) ?? "Models";
+  const [tab, setTab] = useState<TabLabel>(initial);
+  const [page, setPage] = useState(1);
+  const [view, setView] = useState<"grid" | "list">("grid");
+  const [preview, setPreview] = useState<ListedFile | null>(null);
+
+  const files = buckets[tab];
+  const pageCount = Math.max(1, Math.ceil(files.length / PAGE_SIZE));
+  const current = Math.min(page, pageCount);
+  const visible = files.slice((current - 1) * PAGE_SIZE, current * PAGE_SIZE);
+  const pages = pageList(current, pageCount);
+
+  useEffect(() => {
+    if (!preview) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setPreview(null);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [preview]);
+
+  function selectTab(label: TabLabel) {
+    setTab(label);
+    setPage(1);
+    router.replace(`/work/${project.slug}?asset=${label.toLowerCase()}`, { scroll: false });
+  }
 
   return (
-    <div className="bg-[#0c0e12] text-[#f4f6f8] lg:grid lg:min-h-[calc(100vh-4.5rem)] lg:grid-cols-[16rem_minmax(0,1fr)]">
-      <aside className="flex flex-col justify-between gap-10 px-6 py-8 sm:px-8 lg:sticky lg:top-[4.25rem] lg:max-h-[calc(100vh-4.25rem)] lg:overflow-y-auto lg:px-8 lg:py-10">
-        <div className="work-rise">
-          <h1 className="text-lg font-medium leading-snug">{project.title}</h1>
-          <p className="mt-2 text-sm text-[#9aafc4]">{categoryName}</p>
-          {project.tree ? (
-            <p className="mt-2 text-sm text-[#9aafc4]">
-              {files} {files === 1 ? "file" : "files"}
+    <div className="project-page site-wrap">
+      <aside className="project-sidebar">
+        <div>
+          <Link href="/work" className="project-back">
+            <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4">
+              <path fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" d="M14 6 8 12l6 6" />
+            </svg>
+            Back to Work
+          </Link>
+          <h1>{project.title}</h1>
+          <p className="project-category">{categoryLabel(project.category)}</p>
+          <p className="project-count">
+            {totalFiles} {totalFiles === 1 ? "file" : "files"}
+          </p>
+          {project.summary ? <p className="project-summary">{project.summary}</p> : null}
+          {project.details.map((detail) => (
+            <p key={detail} className="project-detail">
+              {detail}
             </p>
-          ) : null}
-          {project.summary ? <p className="mt-6 text-sm leading-relaxed text-[#d5deea]">{project.summary}</p> : null}
-          {project.details.length > 0 ? (
-            <div className="mt-4 grid gap-3">
-              {project.details.map((detail) => (
-                <p key={detail} className="text-sm leading-relaxed text-[#9aafc4]">
-                  {detail}
-                </p>
-              ))}
-            </div>
-          ) : null}
-          {sections.length > 0 ? (
-            <nav className="mt-8 flex flex-col gap-2" aria-label="Project assets">
-              {sections.map((section) => {
-                const selected = section.id === active?.id;
-                return (
-                  <Link
-                    key={section.id}
-                    href={`/work/${project.slug}?asset=${encodeURIComponent(section.id)}`}
-                    aria-current={selected ? "page" : undefined}
-                    scroll={false}
-                    className={`w-fit text-left text-sm leading-snug underline-offset-4 hover:underline ${
-                      selected ? "text-[#f4f6f8] underline" : "text-[#9aafc4]"
-                    }`}
-                  >
-                    {section.label}
-                  </Link>
-                );
-              })}
-            </nav>
-          ) : null}
+          ))}
+          <nav className="project-side-nav" aria-label="Project assets">
+            {tabs.map((label) => (
+              <a
+                key={label}
+                href={`/work/${project.slug}?asset=${label.toLowerCase()}`}
+                aria-current={label === tab ? "page" : undefined}
+                onClick={(event) => {
+                  event.preventDefault();
+                  selectTab(label);
+                }}
+              >
+                <TabIcon label={label} />
+                {label}
+              </a>
+            ))}
+          </nav>
         </div>
-        <nav className="flex flex-col gap-3 text-sm" aria-label="Project">
-          <Link href={`/work/category/${project.category}`} className="w-fit text-[#d5deea] underline-offset-4 hover:underline">
-            {categoryName}
-          </Link>
-          <Link href="/work" className="w-fit text-[#d5deea] underline-offset-4 hover:underline">
-            All work
-          </Link>
-        </nav>
+        <Link href={`/work/category/${project.category}`} className="project-category-link">
+          {categoryLabel(project.category)}
+        </Link>
       </aside>
-      {active?.folder ? (
-        <div className="px-1 pb-10 sm:px-2 lg:py-2">
-          <FolderGallery folder={active.folder} depth={1} />
-        </div>
-      ) : active?.file ? (
-        <div className="px-1 pb-10 sm:px-2 lg:py-2">
-          <h2 className="px-2 pt-6 pb-2 text-sm font-medium text-[#f4f6f8]">{active.file.name}</h2>
-          <div className="work-masonry">
-            <GalleryAsset file={active.file} />
+
+      <section className="project-stage">
+        <div className="project-toolbar">
+          <div className="project-tabs" role="tablist" aria-label="Project files">
+            {tabs.map((label) => (
+              <button key={label} type="button" role="tab" aria-selected={label === tab} onClick={() => selectTab(label)}>
+                {label}
+              </button>
+            ))}
+          </div>
+          <div className="project-view">
+            <button type="button" aria-label="Grid view" aria-pressed={view === "grid"} onClick={() => setView("grid")}>
+              <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4">
+                <path fill="currentColor" d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z" />
+              </svg>
+            </button>
+            <button type="button" aria-label="List view" aria-pressed={view === "list"} onClick={() => setView("list")}>
+              <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4">
+                <path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
+              </svg>
+            </button>
           </div>
         </div>
-      ) : project.media.length > 0 ? (
-        <FlatGallery project={project} />
-      ) : (
-        <p className="m-6 border border-white/15 p-6 text-sm text-[#d5deea]">
-          No public images, video, or files are attached to this project.
-        </p>
-      )}
+
+        <div className="project-panel" key={`${tab}-${current}-${view}`}>
+          {visible.length === 0 ? (
+            <p className="project-empty">No files in this group.</p>
+          ) : (
+            <div className={`project-grid${view === "list" ? " is-list" : ""}`}>
+              {visible.map((file) => (
+                <article key={file.src} className="project-card">
+                  <div className="project-card-media">
+                    <FilePreview file={file} />
+                  </div>
+                  <button type="button" className="project-expand" aria-label={`Open ${file.name}`} onClick={() => setPreview(file)}>
+                    <svg viewBox="0 0 24 24" aria-hidden className="h-3.5 w-3.5">
+                      <path fill="none" stroke="currentColor" strokeWidth="1.8" d="M9 5H5v4M15 5h4v4M9 19H5v-4M15 19h4v-4" />
+                    </svg>
+                  </button>
+                  <div className="project-card-body">
+                    <p>{file.name}</p>
+                    {file.folder ? <p>{file.folder}</p> : null}
+                    {needsDownload(file) ? (
+                      <a href={mediaSrc(file.src)} download={file.name}>
+                        Download
+                      </a>
+                    ) : null}
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {pageCount > 1 ? (
+          <nav className="project-pages" aria-label="Gallery pages">
+            <button type="button" aria-label="Previous page" disabled={current === 1} onClick={() => setPage(current - 1)}>
+              <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4">
+                <path fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" d="M14 6 8 12l6 6" />
+              </svg>
+            </button>
+            {pages.map((item, index) =>
+              item === "…" ? (
+                <span key={`gap-${index}`}>…</span>
+              ) : (
+                <button key={item} type="button" aria-current={item === current ? "page" : undefined} onClick={() => setPage(item)}>
+                  {item}
+                </button>
+              ),
+            )}
+            <button type="button" aria-label="Next page" disabled={current === pageCount} onClick={() => setPage(current + 1)}>
+              <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4">
+                <path fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" d="m10 6 6 6-6 6" />
+              </svg>
+            </button>
+          </nav>
+        ) : null}
+      </section>
+
+      {preview ? (
+        <div className="project-lightbox" role="dialog" aria-modal="true" aria-label={preview.name} onClick={() => setPreview(null)}>
+          <div className="project-lightbox-frame" onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="project-lightbox-close" aria-label="Close preview" onClick={() => setPreview(null)}>
+              <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4">
+                <path fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" d="M6 6l12 12M18 6 6 18" />
+              </svg>
+            </button>
+            <FilePreview file={preview} expanded />
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

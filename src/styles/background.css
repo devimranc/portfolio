@@ -15,14 +15,15 @@
 }
 
 html:has(.landing-background) {
-  background: #000000;
+  background: #1a2433;
   scroll-behavior: smooth;
 }
 
 html:has(.landing-background) body {
-  background: #000000;
-  color: white;
+  background: #1a2433;
+  color: #f4f6f8;
   overflow-x: hidden;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -221,7 +221,7 @@ export const projects: Project[] = [
     category: "character-modeling",
     featured: true,
     summary:
-      "Character stills and a facial-performance clip from the character model set.",
+      "I created a stylized male character and prepared full-body and close-up stills for the set. A separate clip shows the rigged model with facial expressions, so the work covers both the finished model and how the face performs.",
     details: [
       "The set includes full-body and close-up stills of a stylized male character.",
       "A separate clip shows the rigged model with facial expressions.",
@@ -267,8 +267,10 @@ export const projects: Project[] = [
     category: "vr-project",
     featured: true,
     summary:
-      "Working from a provided reference, I created a photo-gallery environment and its 3D models, then integrated the environment into VR. The links include the reference, models, and an animation preview.",
-    details: [],
+      "Working from a provided reference, I created a photo-gallery environment and its 3D models, then integrated the environment into VR for client testing. The project includes the reference, the models, and an animation preview of the space.",
+    details: [
+      "The gallery was built so the environment and its models could be reviewed in VR, not only as still images.",
+    ],
     media: [
       {
         kind: "image",
@@ -638,7 +640,7 @@ export const projects: Project[] = [
     category: "motion-2d",
     featured: true,
     summary:
-      "Splash, store, and character-select art, plus dragon character frames.",
+      "This set includes splash art, store screens, and character-select layouts, plus frames of the dragon character. The game title is not recorded in the filenames, so the work is labeled from the artwork itself.",
     details: [
       "The game title is not recorded in the filenames, so this set is labeled from the artwork.",
     ],
@@ -877,31 +879,31 @@ export const services = [
   {
     id: "3d-modeling",
     title: "3D Modeling",
-    body: "Character and product modeling, from stylized character stills to object visualization such as the book and camera sets.",
+    body: "Character and product modeling, from stylized character stills to object visualization such as the book and camera sets. Each model is finished for presentation, with attention to form, proportion, and stills that can stand alone or move into animation.",
   },
   {
     id: "character-rigging",
     title: "Character Rigging & Animation",
-    body: "Cleanup of supplied character models, including topology, UVs, and rigging, plus combat reactions, run cycles, and facial performance. One character was integrated into Unity for procedural animation.",
+    body: "Cleanup of supplied character models, including topology, UVs, and rigging, plus combat reactions, run cycles, and facial performance. One character was integrated into Unity for procedural animation, and a stylized character was rigged to show facial expressions.",
   },
   {
     id: "product-visualization",
     title: "Product Visualization & Animation",
-    body: "PBR material, lighting, and camera refinement for photorealistic product stills, along with product installation and assembly animation. Medical product animation has also been delivered for Memsel, with the footage kept private under NDA.",
+    body: "PBR material, lighting, and camera refinement for photorealistic product stills, along with product installation and assembly animation. The stills include sets such as the book and camera, and exploded views where the parts need to be shown. Medical product animation has also been delivered for Memsel, with the footage kept private under NDA.",
   },
   {
     id: "unreal-vr",
     title: "Unreal Engine",
-    body: "Character rigs integrated into Unreal Engine, and a photo gallery environment with models integrated into VR for client testing.",
+    body: "Character rigs integrated into Unreal Engine, and a photo gallery environment with models integrated into VR for client testing. The real-time scenes place finished assets in an engine space so they can be reviewed in context, including a walkable gallery.",
   },
   {
     id: "architecture",
     title: "Architectural Visualization",
-    body: "Interior stills and camera walkthroughs of houses and a villa exterior.",
+    body: "Interior stills and camera walkthroughs of houses and a villa exterior. The visualizations cover residential interiors and an exterior view, using camera movement to show how each space reads.",
   },
   {
     id: "ai-video",
     title: "AI-Assisted Video Production",
-    body: "AI-assisted environment video, including a rain environment. Supplied AI-generated character models have also been cleaned up and rigged for production use.",
+    body: "AI-assisted environment video, including a rain environment, plus other assisted sequences such as product and brand animations. Supplied AI-generated character models have also been cleaned up and rigged for production use, so a generated start can be finished for animation.",
   },
 ];

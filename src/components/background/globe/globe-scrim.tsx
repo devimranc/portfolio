@@ -1,17 +1,17 @@
 import { type FC } from "react";
 
-const PAGE = "0, 0, 0";
+const PAGE = "26, 36, 51";
 
 export const GlobeScrim: FC = () => (
   <>
     <div
       className="absolute inset-0"
-      style={{ background: `rgba(${PAGE}, 0.14)` }}
+      style={{ background: `rgba(${PAGE}, 0.08)` }}
     />
     <div
       className="absolute inset-0"
       style={{
-        background: `radial-gradient(145% 115% at 50% 52%, rgba(${PAGE}, 0) 48%, rgba(${PAGE}, 0.28) 80%, rgba(${PAGE}, 0.6) 100%)`,
+        background: `radial-gradient(130% 110% at 50% 40%, rgba(${PAGE}, 0) 55%, rgba(${PAGE}, 0.18) 100%)`,
       }}
     />
     <div

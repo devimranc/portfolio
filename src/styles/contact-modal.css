@@ -1,0 +1,228 @@
+button.nav-item,
+button.home-text-link,
+button.btn-primary,
+button.btn-ghost,
+button.service-arrow {
+  font: inherit;
+  cursor: pointer;
+}
+
+button.nav-item {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+button.service-arrow {
+  border: 1px solid rgba(213, 222, 234, 0.28);
+  background: transparent;
+  padding: 0;
+}
+
+.contact-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: rgba(12, 18, 28, 0.62);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+.contact-overlay.is-open {
+  opacity: 1;
+}
+
+.contact-modal {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+  width: min(52rem, 100%);
+  max-height: min(40rem, calc(100vh - 2.5rem));
+  overflow: auto;
+  border: 1px solid rgba(213, 222, 234, 0.2);
+  border-radius: 1.35rem;
+  background:
+    radial-gradient(50% 80% at 18% 100%, rgba(213, 222, 234, 0.16), transparent 58%),
+    linear-gradient(180deg, rgba(36, 50, 70, 0.92), rgba(21, 29, 42, 0.94));
+  box-shadow:
+    0 30px 70px -36px rgba(6, 12, 22, 0.95),
+    0 0 40px -18px rgba(213, 222, 234, 0.55);
+  color: #f4f6f8;
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease;
+}
+
+.contact-overlay.is-open .contact-modal {
+  opacity: 1;
+  transform: none;
+}
+
+.contact-info,
+.contact-form-pane {
+  padding: 1.7rem 1.5rem 1.5rem;
+}
+
+.contact-info {
+  border-right: 1px solid rgba(213, 222, 234, 0.12);
+}
+
+.contact-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0;
+  color: #9aafc4;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+}
+
+.contact-kicker::after {
+  content: "";
+  width: 2.4rem;
+  height: 1px;
+  background: rgba(213, 222, 234, 0.45);
+}
+
+.contact-info h2 {
+  margin: 0.9rem 0 0;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+}
+
+.contact-info h2 span {
+  display: block;
+  color: #b7c6d6;
+  font-weight: 500;
+}
+
+.contact-info > p {
+  margin: 0.9rem 0 0;
+  max-width: 18rem;
+  color: #c5d0dc;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.contact-place {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 1.3rem 0 0;
+  color: #d5deea;
+  font-size: 0.9rem;
+}
+
+.contact-note {
+  margin: 0.8rem 0 0;
+  max-width: 18rem;
+  color: #9aafc4;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.contact-close {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  z-index: 2;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #d5deea;
+  cursor: pointer;
+}
+
+.contact-close:hover {
+  background: rgba(213, 222, 234, 0.1);
+}
+
+.contact-form {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 0.35rem;
+  color: #f4f6f8;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.contact-field {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid rgba(213, 222, 234, 0.2);
+  border-radius: 0.75rem;
+  background: rgba(18, 26, 38, 0.45);
+  padding: 0 0.75rem;
+  color: #9aafc4;
+}
+
+.contact-field:focus-within {
+  border-color: rgba(213, 222, 234, 0.55);
+  box-shadow: 0 0 0 3px rgba(213, 222, 234, 0.12);
+}
+
+.contact-field input,
+.contact-field textarea {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #f4f6f8;
+  font: inherit;
+  font-weight: 400;
+  padding: 0.75rem 0;
+  outline: none;
+  resize: vertical;
+}
+
+.contact-field textarea {
+  min-height: 7rem;
+}
+
+.contact-form .btn-primary {
+  justify-self: start;
+  margin-top: 0.2rem;
+}
+
+.contact-status {
+  margin: 0;
+  color: #d5deea;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 760px) {
+  .contact-modal {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-info {
+    border-right: 0;
+    border-bottom: 1px solid rgba(213, 222, 234, 0.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-overlay,
+  .contact-modal {
+    transition: none;
+  }
+}

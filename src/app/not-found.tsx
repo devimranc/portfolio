@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ContactProvider } from "@/components/contact/ContactProvider";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <>
+    <ContactProvider>
     <SiteHeader />
     <main className="site-wrap py-24">
       <p className="text-sm tracking-wide">404</p>
@@ -17,7 +18,7 @@ export default function NotFound() {
         This page is not available
       </h1>
       <p className="mt-4 max-w-md text-black/75">
-        The link may be out of date. The work, services, and contact pages are
+        The link may be out of date. Work, services, and the contact form are
         still available.
       </p>
       <Link href="/" className="mt-8 inline-block text-sm underline">
@@ -25,6 +26,6 @@ export default function NotFound() {
       </Link>
     </main>
     <SiteFooter />
-    </>
+    </ContactProvider>
   );
 }

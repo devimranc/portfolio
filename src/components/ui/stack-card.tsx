@@ -2,7 +2,7 @@
 
 import { useRef, type FC, type ReactNode } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { ACCENT_GRADIENTS, STACK_OFFSET_REM, STACK_SCALE_STEP } from "@/constants/motion";
+import { ACCENT_GRADIENTS, STACK_SCALE_STEP } from "@/constants/motion";
 
 interface StackCardProps {
   index: number;
@@ -28,15 +28,16 @@ export const StackCard: FC<StackCardProps> = ({ index, total, children, accent }
   const wash = accent ?? ACCENT_GRADIENTS[index % ACCENT_GRADIENTS.length];
 
   return (
-    <div ref={ref} className="sticky z-10" style={{ top: `calc(8rem + ${index * STACK_OFFSET_REM}rem)` }}>
+    <div ref={ref} className="sticky z-10" style={{ top: `calc(4.25rem + ${index * 0.65}rem)` }}>
       <motion.article
         style={{ scale, opacity }}
-        className="relative min-h-[32rem] overflow-hidden rounded-3xl border border-white/10 bg-[#243246] lg:h-[78vh]"
+        className="relative overflow-hidden rounded-[1.6rem] border border-[#d5deea]/15 bg-[#1a2433]"
       >
-        <div className={`absolute inset-0 bg-gradient-to-br opacity-30 ${wash}`} />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.10),transparent_45%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_90%,rgba(12,20,32,0.45),transparent_45%)]" />
-        <div className="relative grid h-full grid-cols-1 gap-8 p-8 md:p-12 lg:grid-cols-12 lg:p-16">
+        <div
+          className={`pointer-events-none absolute inset-0 bg-gradient-to-br opacity-40 ${wash}`}
+        />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(62%_80%_at_82%_48%,rgba(213,222,234,0.28),transparent_58%),radial-gradient(46%_55%_at_8%_0%,rgba(154,175,196,0.22),transparent_62%)]" />
+        <div className="relative grid h-full grid-cols-1 items-center gap-6 p-6 md:p-8 lg:grid-cols-12 lg:p-9">
           {children}
         </div>
         <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/10" />

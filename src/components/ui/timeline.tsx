@@ -17,20 +17,20 @@ export const TimelineItem: FC<{ index: number; marker: ReactNode; body: ReactNod
       initial={{ opacity: 0, y: 60 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay: index * 0.05, ease: "easeOut" }}
-      className="flex justify-start pt-10 md:gap-10 md:pt-40"
+      className="home-expertise-row flex items-center justify-start pt-2 md:gap-8 md:pt-2.5"
     >
-      <div className="sticky top-40 z-40 flex max-w-xs flex-col items-center self-start md:w-full md:max-w-sm md:flex-row lg:max-w-sm">
-        <div className="absolute -left-[15px] flex h-10 w-10 items-center justify-center rounded-full bg-[#243246]">
+      <div className="sticky top-28 z-40 flex max-w-[15rem] flex-col items-center self-center md:w-64 md:max-w-none md:flex-row">
+        <div className="absolute -left-[11px] flex h-6 w-6 items-center justify-center rounded-full bg-[#102033]">
           <motion.div
             initial={{ scale: 0 }}
             animate={inView ? { scale: 1 } : {}}
             transition={{ duration: 0.5, delay: index * 0.05 + 0.2 }}
-            className="h-4 w-4 rounded-full border border-white/20 bg-gradient-to-br from-[#d5deea] to-[#7d93ab] p-2 shadow-lg shadow-[#0e1624]/30"
+            className="h-2.5 w-2.5 rounded-full border border-white/30 bg-[#d5deea] shadow-[0_0_12px_rgba(186,214,230,0.45)]"
           />
         </div>
-        <div className="hidden md:block md:pl-20">{marker}</div>
+        <div className="hidden md:block md:pl-10">{marker}</div>
       </div>
-      <div className="relative w-full pl-20 pr-4 md:pl-4">
+      <div className="relative min-w-0 flex-1 pl-12 pr-1 md:pl-2">
         <div className="mb-4 md:hidden">{marker}</div>
         {body}
       </div>
@@ -56,7 +56,7 @@ export const TimelineRail: FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <div ref={containerRef}>
-      <div ref={ref} className="relative mt-8 pb-20">
+      <div ref={ref} className="relative mt-6 pb-6">
         {children}
         <div
           style={{ height: `${height}px` }}
