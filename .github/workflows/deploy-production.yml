@@ -1,0 +1,48 @@
+name: Deploy production (PM2)
+
+on:
+  push:
+    branches:
+      - Production
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production-imran
+  cancel-in-progress: true
+
+jobs:
+  # Always records the deploy trigger. The server PM2 process
+  # imran-portfolio-watch polls origin/Production and runs
+  # scripts/deploy-production.sh (pull → npm ci → build → pm2 restart).
+  deploy:
+    name: Trigger production deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Confirm Production deploy path
+        run: |
+          set -euo pipefail
+          echo "Production branch updated."
+          echo "Server watcher imran-portfolio-watch will:"
+          echo "  1. git fetch/reset origin/Production"
+          echo "  2. git lfs pull (media)"
+          echo "  3. npm ci"
+          echo "  4. npm run build"
+          echo "  5. pm2 restart imran-portfolio (port 3004)"
+          echo "  6. ensure imran-portfolio-tunnel stays online"
+          echo "Poll interval: 60s. Manual: ./scripts/deploy-production.sh"
+
+      # Optional immediate deploy over SSH (skips waiting for the watcher).
+      # Enable with repo variable ENABLE_SSH_DEPLOY=true and secrets:
+      # DEPLOY_HOST, DEPLOY_USER, DEPLOY_SSH_KEY
+      - name: Deploy via SSH (optional)
+        if: ${{ vars.ENABLE_SSH_DEPLOY == 'true' }}
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script_stop: true
+          script: |
+            set -euo pipefail
+            /mnt/1TB-EXT/ImranChodriPort/portfolio/scripts/deploy-production.sh
