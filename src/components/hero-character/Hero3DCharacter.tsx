@@ -32,7 +32,10 @@ const Hero3DCharacter = ({
   const rimRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef(new THREE.Scene());
   const onProgressRef = useRef(onProgress);
-  onProgressRef.current = onProgress;
+
+  useEffect(() => {
+    onProgressRef.current = onProgress;
+  }, [onProgress]);
 
   useEffect(() => {
     const host = canvasDiv.current;
@@ -68,7 +71,7 @@ const Hero3DCharacter = ({
     let removeHover: (() => void) | undefined;
     let removeScreen: (() => void) | undefined;
 
-    const clock = new THREE.Clock();
+    const timer = new THREE.Timer();
     const light = setLighting(scene, rimRef.current, assetBase);
     const progress = setProgress((value) => onProgressRef.current?.(value));
     const { loadCharacter } = setCharacter(renderer, scene, camera, assetBase);
@@ -148,7 +151,8 @@ const Hero3DCharacter = ({
         );
         light.setPointLight(screenLight);
       }
-      if (mixer) mixer.update(clock.getDelta());
+      timer.update();
+      if (mixer) mixer.update(timer.getDelta());
       renderer.render(scene, camera);
     };
     animate();

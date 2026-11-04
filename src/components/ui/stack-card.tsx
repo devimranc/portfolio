@@ -12,26 +12,28 @@ interface StackCardProps {
   accent?: string;
 }
 
-/** Sticky card that scales and fades as the next card covers it. */
+/** Sticky overlap stack — same pin point, rising z-index, original scale/fade on scroll. */
 export const StackCard: FC<StackCardProps> = ({ index, total, children, accent }) => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 80%", "end 30%"],
   });
+
   const scale = useTransform(
     scrollYProgress,
     [0, 1],
-    [1, 1 - (total - index) * STACK_SCALE_STEP]
+    [1, 1 - (total - index) * STACK_SCALE_STEP],
   );
   const opacity = useTransform(scrollYProgress, [0.6, 1], [1, 0.7]);
   const wash = accent ?? ACCENT_GRADIENTS[index % ACCENT_GRADIENTS.length];
 
   return (
-    <div ref={ref} className="sticky z-10" style={{ top: `calc(4.25rem + ${index * 0.65}rem)` }}>
+    <div ref={ref} className="work-stack-sticky" style={{ zIndex: 10 + index }}>
       <motion.article
+        data-stack-card
         style={{ scale, opacity }}
-        className="relative overflow-hidden rounded-[1.6rem] border border-[#d5deea]/15 bg-[#1a2433]"
+        className="stack-card-panel relative overflow-hidden rounded-[1.6rem] border border-[#d5deea]/15 bg-[#1a2433]"
       >
         <div
           className={`pointer-events-none absolute inset-0 bg-gradient-to-br opacity-40 ${wash}`}

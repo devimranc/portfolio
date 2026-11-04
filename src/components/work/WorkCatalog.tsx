@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ContactButton } from "@/components/contact/ContactProvider";
 import { ProjectMedia } from "@/components/work/ProjectMedia";
 import { categoryLabel, type CategoryId, type MediaItem } from "@/data/portfolio";
+import { requestMotionRevealRefresh } from "@/lib/motion/fluid-events";
 
 export type WorkCardData = {
   slug: string;
@@ -105,8 +106,12 @@ export function WorkCatalog({ projects }: { projects: WorkCardData[] }) {
     setPage(1);
   }
 
+  useEffect(() => {
+    requestMotionRevealRefresh();
+  }, [filterId, current]);
+
   return (
-    <div className="work-page">
+    <div className="work-page" data-motion-root>
       <section className="work-hero site-wrap">
         <div className="work-hero-copy">
           <p className="work-kicker work-rise">Work</p>
@@ -135,15 +140,15 @@ export function WorkCatalog({ projects }: { projects: WorkCardData[] }) {
         {visible.length === 0 ? (
           <p className="work-empty">No projects in this category yet.</p>
         ) : (
-          <div className="work-grid">
+          <div className="work-grid" data-reveal-stagger>
             {visible.map((project, index) => (
               <Link
                 key={project.slug}
                 href={`/work/${project.slug}`}
-                className="work-project-card work-rise"
-                style={{ animationDelay: `${index * 50}ms` }}
+                className="work-project-card"
+                data-glass-tilt
               >
-                <div className="work-project-media">
+                <div className="work-project-media" data-fluid data-media-tilt>
                   {project.cover ? (
                     <div className="work-card-media">
                       <ProjectMedia item={project.cover} cover priority={index < 3 && current === 1} />
@@ -155,7 +160,7 @@ export function WorkCatalog({ projects }: { projects: WorkCardData[] }) {
                 <div className="work-project-meta">
                   <div>
                     <p>{shortLabel[project.category] ?? categoryLabel(project.category)}</p>
-                    <h2>{project.title}</h2>
+                    <h2 data-split-heading>{project.title}</h2>
                   </div>
                   <span className="work-project-arrow" aria-hidden>
                     <Arrow />

@@ -63,7 +63,7 @@ export default function HomePage() {
   return (
     <HomeIntro>
     <BackgroundSystem>
-    <main>
+    <main data-motion-root>
       <section id="home" data-bg-anchor className="home-hero relative h-[100vh] overflow-hidden">
         <HeroAmbient />
         <HeroCharacterSlot />
@@ -100,7 +100,7 @@ export default function HomePage() {
             <Arrow />
           </ContactButton>
         </div>
-        <ul className="home-stats">
+        <ul className="home-stats" data-reveal-stagger>
           {stats.map((stat, index) => (
             <li key={stat.label} className="reveal" style={{ animationDelay: `${0.48 + index * 0.08}s` }}>
               <span className="home-stat-icon">
@@ -122,10 +122,12 @@ export default function HomePage() {
 
       <PracticeMarquee />
 
-      <section id="work" data-bg-anchor className="site-wrap relative pb-6">
+      <section id="work" data-bg-anchor data-parallax="0.06" className="site-wrap relative pb-4 pt-2 md:pt-4">
         <ScrollAurora preset="royalCoral" travel={["-10%", "10%"]} opacity={[0.2, 0.6, 0.2]} />
-        <div className="reveal-scroll mb-3 flex items-end justify-between gap-4">
-          <h2 className="text-[1.65rem] font-semibold tracking-tight">Selected work</h2>
+        <div className="reveal-scroll mb-5 flex items-end justify-between gap-4 md:mb-6">
+          <h2 data-split-heading className="text-[1.65rem] font-semibold tracking-tight">
+            Selected work
+          </h2>
           <Link href="/work" className="home-text-link text-sm">
             All projects
             <Arrow />
@@ -137,9 +139,11 @@ export default function HomePage() {
 
       <section id="services" data-bg-anchor className="relative">
         <ScrollAurora preset="lavenderAqua" travel={["-15%", "15%"]} opacity={[0.3, 0.7, 0.3]} />
-        <div className="site-wrap py-6">
+        <div className="site-wrap pb-6 pt-0">
           <div className="reveal-scroll flex items-end justify-between gap-4">
-            <h2 className="text-[1.65rem] font-semibold tracking-tight">Expertise</h2>
+            <h2 data-split-heading className="text-[1.65rem] font-semibold tracking-tight">
+              Expertise
+            </h2>
             <Link href="/services" className="home-text-link text-sm">
               Services
               <Arrow />
@@ -150,11 +154,13 @@ export default function HomePage() {
       </section>
 
       <section id="about" data-bg-anchor className="relative overflow-hidden">
-        <ParticleLayer quantity={120} ease={80} color="#ffffff" refresh />
+        <ParticleLayer quantity={64} ease={80} size={0.28} color="#ffffff" refresh />
         <GlowField preset="contact" />
         <div className="site-wrap reveal-scroll grid items-center gap-5 py-6 md:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <h2 className="text-[1.65rem] font-semibold tracking-tight">About</h2>
+            <h2 data-split-heading className="text-[1.65rem] font-semibold tracking-tight">
+              About
+            </h2>
             <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/65">
               Imran Chaudhry is a 3D animator and motion designer based in
               Bolingbrook, Illinois. His work covers character rigging and
@@ -166,10 +172,14 @@ export default function HomePage() {
               <Arrow />
             </Link>
           </div>
-          <div id="contact" className="home-cta glass-strong flex flex-col justify-center p-6 md:p-7">
+          <div
+            id="contact"
+            className="home-cta glass-strong flex flex-col justify-center p-6 md:p-7"
+            data-glass-tilt
+          >
             <h2 className="text-[1.7rem] font-semibold tracking-tight">Available for new work</h2>
             <p className="mt-2 max-w-sm text-sm text-white/60">
-              Send a project inquiry.
+              Open the contact popup to reach me on Upwork.
             </p>
             <ContactButton className="btn-primary mt-6 w-fit">
               Contact

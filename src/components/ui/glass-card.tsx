@@ -19,6 +19,7 @@ export const GlassCard: FC<{ children: ReactNode; className?: string; delay?: nu
       animate={inView ? "visible" : "hidden"}
       variants={fadeInUp}
       transition={{ duration: 0.6, delay, ease: "easeOut" }}
+      data-glass-tilt
       className={`glass gradient-border ${className}`}
     >
       {children}

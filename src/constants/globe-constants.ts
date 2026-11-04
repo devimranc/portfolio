@@ -16,7 +16,7 @@ export const GLOBE = {
   sphereRadius: 1.5,
   spikeScale: 0.06,
   push: 0.52,
-  fitFraction: 0.2,
+  fitFraction: 0.11,
   falloff: 4,
   glow: 1.35,
   introDuration: 1.8,
@@ -82,14 +82,14 @@ export const SIX_ANCHOR_STOPS: GlobeStop[][] = [
     { at: 1, ...DIP },
   ],
   [
-    { at: 0.5, x: -0.46, y: -0.34, scale: 1.14, presence: 1 },
+    { at: 0.5, x: -0.46, y: -0.34, scale: 0.63, presence: 1 },
     { at: 1, ...DIP },
   ],
   [
-    { at: 0.5, x: 0.46, y: -0.31, scale: 1.02, presence: 1 },
+    { at: 0.5, x: 0.46, y: -0.31, scale: 0.56, presence: 1 },
     { at: 1, ...DIP },
   ],
-  [{ at: 0.5, x: -0.47, y: -0.33, scale: 1.1, presence: 1 }],
+  [{ at: 0.5, x: -0.47, y: -0.33, scale: 0.62, presence: 1 }],
 ];
 
 const LEFT_STOPS = SIX_ANCHOR_STOPS[1];

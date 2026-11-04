@@ -17,7 +17,7 @@ export default function WorkPage() {
   }));
 
   return (
-    <main>
+    <main data-motion-root>
       <WorkCatalog projects={projects} />
     </main>
   );

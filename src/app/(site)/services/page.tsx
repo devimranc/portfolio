@@ -78,14 +78,14 @@ function Arrow() {
 
 export default function ServicesPage() {
   return (
-    <main className="services-page site-wrap">
+    <main className="services-page site-wrap" data-motion-root>
       <header className="services-head">
         <h1>Services</h1>
         <p>The services below match the kinds of work in this portfolio.</p>
       </header>
-      <div className="services-list">
+      <div className="services-list" data-reveal-stagger>
         {services.map((service, index) => (
-          <article key={service.id} id={service.id} className="service-card">
+          <article key={service.id} id={service.id} className="service-card" data-glass-tilt>
             <span className="service-index">{String(index + 1).padStart(2, "0")}</span>
             <span className="service-icon">
               <ServiceIcon id={service.id as keyof typeof icons} />

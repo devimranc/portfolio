@@ -5,7 +5,7 @@ import { workProjectsByCategory } from "@/data/zain-drive";
 
 export function CategoryGrid() {
   return (
-    <div className="mt-12 grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="mt-12 grid gap-8 sm:grid-cols-2 xl:grid-cols-3" data-reveal-stagger>
       {categories.map((category, index) => {
         const count = workProjectsByCategory(category.id).length;
         const cover = categoryCover(category.id);
@@ -14,10 +14,11 @@ export function CategoryGrid() {
             key={category.id}
             href={`/work/category/${category.id}`}
             className="work-rise group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d5deea]"
+            data-glass-tilt
             style={{ animationDelay: `${index * 60}ms` }}
           >
             <div className="overflow-hidden bg-[#243246]">
-              <div className="aspect-[4/3] overflow-hidden">
+              <div className="aspect-[4/3] overflow-hidden" data-fluid>
                 {cover ? (
                   <div className="work-card-media h-full w-full">
                     <ProjectMedia item={cover} cover priority={index < 3} />

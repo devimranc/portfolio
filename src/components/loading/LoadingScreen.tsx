@@ -6,7 +6,13 @@ import "@/styles/loading.css";
 
 const roles = ["3D Animator", "Motion Designer"];
 
-export function LoadingScreen({ onDone }: { onDone?: () => void }) {
+export function LoadingScreen({
+  onReveal,
+  onDone,
+}: {
+  onReveal?: () => void;
+  onDone?: () => void;
+}) {
   const [percent, setPercent] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -14,7 +20,9 @@ export function LoadingScreen({ onDone }: { onDone?: () => void }) {
 
   useEffect(() => {
     let value = 0;
-    let timer = window.setInterval(() => {
+    let timer = 0;
+    let rush = 0;
+    timer = window.setInterval(() => {
       if (value <= 50) {
         value += Math.round(Math.random() * 5);
         setPercent(value);
@@ -30,7 +38,7 @@ export function LoadingScreen({ onDone }: { onDone?: () => void }) {
 
     const finish = window.setTimeout(() => {
       window.clearInterval(timer);
-      const rush = window.setInterval(() => {
+      rush = window.setInterval(() => {
         value = Math.min(100, value + 1);
         setPercent(value);
         if (value >= 100) window.clearInterval(rush);
@@ -39,6 +47,7 @@ export function LoadingScreen({ onDone }: { onDone?: () => void }) {
 
     return () => {
       window.clearInterval(timer);
+      window.clearInterval(rush);
       window.clearTimeout(finish);
     };
   }, []);
@@ -55,10 +64,12 @@ export function LoadingScreen({ onDone }: { onDone?: () => void }) {
   }, [percent]);
 
   useEffect(() => {
-    if (!clicked || !onDone) return;
-    const reveal = window.setTimeout(onDone, 900);
+    if (!clicked) return;
+    onReveal?.();
+    if (!onDone) return;
+    const reveal = window.setTimeout(onDone, 480);
     return () => window.clearTimeout(reveal);
-  }, [clicked, onDone]);
+  }, [clicked, onDone, onReveal]);
 
   useEffect(() => {
     if (!onDone) return;

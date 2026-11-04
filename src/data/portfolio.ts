@@ -157,6 +157,21 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "character-animation",
+    title: "Character Animation",
+    category: "character-rigging",
+    summary:
+      "Character performance clips from two animation sets: clothing updates, fighting with VFX, boxing, idles, horse stills and motion, shotgun recoil, superhero cinematics, Monty Python-style and comedic shots, short monologues, infiltration drafts, an Unreal rendering demo, and additional Imran Drive scenes.",
+    details: [],
+    media: [
+      {
+        kind: "image",
+        src: d("zain-drive/Character Animation/Horse/Model/1.jpg"),
+        alt: "Horse character model",
+      },
+    ],
+  },
+  {
     slug: "full-body-facial-and-character-rigging",
     title: "Full-Body, Facial and Character Rigging",
     category: "character-modeling-rigging",
@@ -280,24 +295,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "memsel-medical-animation",
-    title: "Medical animation for Memsel",
-    category: "product-animation",
-    summary:
-      "Three animations for two products for the medical company Memsel. Footage is withheld under NDA.",
-    details: [
-      "The shots include blood from a wound, cross-sections, a bandaged and injured soldier, hospital shots, and a helicopter carrying the soldier.",
-      "Further detail and the animation files are not published because of an NDA.",
-    ],
-    media: [
-      {
-        kind: "file",
-        src: d("imran-drive/JOB DESCRIPTION_.docx"),
-        alt: "Memsel job description",
-      },
-    ],
-  },
-  {
     slug: "product-material-refinement",
     title: "Product material refinement",
     category: "product-modeling",
@@ -321,6 +318,11 @@ export const projects: Project[] = [
     media: [
       {
         kind: "image",
+        src: d("zain-drive/3D model/Camera/1.jpg"),
+        alt: "Camera product still",
+      },
+      {
+        kind: "image",
         src: d("zain-drive/3D model/Book/1.jpg"),
         alt: "Ornate book product still",
       },
@@ -333,11 +335,6 @@ export const projects: Project[] = [
         kind: "image",
         src: d("zain-drive/3D model/Book/3.jpg"),
         alt: "Book product still",
-      },
-      {
-        kind: "image",
-        src: d("zain-drive/3D model/Camera/1.jpg"),
-        alt: "Camera product still",
       },
       {
         kind: "image",
@@ -620,17 +617,24 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "wounded-soldier-and-medic-sequence",
-    title: "Wounded Soldier and Medic Sequence",
+    slug: "dorcas-med-animation",
+    title: "Dorcas Med animation",
     category: "ai-assisted",
     summary:
-      "I created a war-environment sequence showing a badly wounded soldier while a medic attempts to treat him. AI tools were used to create a realistic setting and depict the intense moment of injury.",
-    details: [],
+      "I created 3 animations for 2 different products for a Medical company, Memsel https://www.memsel.com. I created Multiple shots, with blood spurting from the wound scenes, cross-sections, a soldier bandaged and injured, hospital shots, and a helicopter carrying the soldier for safety.",
+    details: [
+      "Some deliverables remain private under client NDA.",
+    ],
     media: [
       {
         kind: "video",
-        src: d("AI-Assisted Video and Animation/Wounded Soldier/wounded soldier 1.mp4"),
-        alt: "Wounded soldier sequence",
+        src: d("zain-drive/Dorcas Med animation/MedDefender/wounded soldier with blood.mp4"),
+        alt: "Dorcas Med animation",
+      },
+      {
+        kind: "file",
+        src: d("imran-drive/JOB DESCRIPTION_.docx"),
+        alt: "Memsel job description",
       },
     ],
   },

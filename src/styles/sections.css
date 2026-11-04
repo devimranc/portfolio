@@ -42,6 +42,34 @@
   -webkit-text-fill-color: transparent;
 }
 
+.work-stack {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  margin-top: 0.5rem;
+  /* Match sticky header (py-3.5 + border + logo row) + clear gap before pinned cards */
+  --site-header-height: 5.75rem;
+  --stack-nav-gap: 2.25rem;
+  --stack-sticky-top: calc(var(--site-header-height) + var(--stack-nav-gap));
+  padding-bottom: 3rem;
+}
+
+.work-stack-sticky {
+  position: sticky;
+  top: var(--stack-sticky-top);
+  width: 100%;
+  transform: translate3d(0, 0, 0);
+}
+
+.stack-card-panel {
+  width: 100%;
+  transform-origin: center top;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
 .glass {
   position: relative;
   overflow: hidden;
@@ -162,5 +190,10 @@
   .animate-marquee,
   .animate-marquee-vertical {
     animation: none;
+  }
+
+  .work-stack-sticky {
+    position: relative;
+    top: auto;
   }
 }

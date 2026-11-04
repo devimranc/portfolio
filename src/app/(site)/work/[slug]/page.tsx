@@ -41,7 +41,7 @@ async function ProjectContent({ params, searchParams }: PageProps) {
   const project = getWorkProject(slug);
   if (!project) notFound();
   return (
-    <main>
+    <main data-motion-root>
       <ProjectGallery project={project} asset={asset} />
     </main>
   );

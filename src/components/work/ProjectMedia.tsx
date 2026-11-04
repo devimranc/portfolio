@@ -19,7 +19,7 @@ export function ProjectMedia({
   if (item.kind === "video") {
     return (
       <video
-        className={`${cover ? "pointer-events-none" : ""} h-full w-full bg-neutral-100 object-cover`}
+        className={`fluid-media-host ${cover ? "pointer-events-none" : ""} h-full w-full bg-neutral-100 object-cover`}
         controls={!cover}
         muted={cover}
         playsInline
@@ -46,7 +46,7 @@ export function ProjectMedia({
     <img
       src={mediaSrc(item.src)}
       alt={item.alt}
-      className="h-full w-full object-cover"
+      className="fluid-media-host h-full w-full object-cover"
       loading={priority ? "eager" : "lazy"}
     />
   );

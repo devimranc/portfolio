@@ -15,6 +15,11 @@
 
 .work-card-media {
   transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  transform-style: flat;
+  isolation: isolate;
+  overflow: hidden;
 }
 
 .group:hover .work-card-media,
@@ -346,6 +351,11 @@ body:has(.work-page) .site-footer {
 .work-project-card:hover {
   transform: translateY(-3px);
   border-color: rgba(213, 222, 234, 0.4);
+}
+
+html.motion-enhanced .work-project-card:hover {
+  transform: translate3d(0, 0, 0);
+  border-color: rgba(147, 197, 253, 0.45);
 }
 
 .work-project-media {

@@ -7,7 +7,8 @@ export const ACCENT_GRADIENTS = [
   "from-[#4a5d74] via-[#314458] to-[#222f42]",
 ] as const;
 
-export const STACK_SCALE_STEP = 0.04;
+export const STACK_SCALE_STEP = 0.05;
+export const STACK_SCROLL_VH = 88;
 export const STACK_OFFSET_REM = 1.25;
 
 export const TILT_SPRING: Transition = { stiffness: 200, damping: 18 };

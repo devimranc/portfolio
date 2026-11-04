@@ -46,7 +46,15 @@ const gameCharacterFolders: Record<string, string> = {
   "character-rigs-for-unreal-engine": "Rachel Rig",
 };
 
-const foldersPublishedOnCuratedProjects = new Set(["VR work", "Product Installation"]);
+/** Drive folders that already have a dedicated curated Work project (same work, richer gallery). */
+const foldersPublishedOnCuratedProjects = new Set([
+  "2D", // motion-design (Zain 2D clips + Imran motion graphics)
+  "Character Animation", // character-animation (merged with Character Animation2)
+  "Character Animation2",
+  "Dorcas Med animation", // dorcas-med-animation
+  "Product Installation", // product-animation
+  "VR work", // vr-photo-gallery
+]);
 
 function compareNames(a: string, b: string) {
   return a.localeCompare(b, "en", { sensitivity: "base" });
@@ -212,20 +220,6 @@ function looseFile(name: string, relativePath: string, kind: GalleryFile["kind"]
 }
 
 function extraDriveNodes(folderName: string): GalleryNode[] {
-  if (folderName === "Character Animation") {
-    return [
-      {
-        type: "folder",
-        name: "Additional scenes",
-        children: [
-          looseFile("Building burn down.mp4", "imran-drive/Building burn down.mp4", "video"),
-          looseFile("Scene 04 New Updated.mp4", "imran-drive/Scene 04 New Updated.mp4", "video"),
-          looseFile("Scene 09 Updated 02.mp4", "imran-drive/Scene 09 Updated 02.mp4", "video"),
-          looseFile("Snowy scene.mp4", "imran-drive/Snowy scene.mp4", "video"),
-        ],
-      },
-    ];
-  }
   if (folderName === "Environment") {
     return [looseFile("thumbnail.png", "imran-drive/thumbnail.png", "image")];
   }
@@ -256,6 +250,38 @@ function folderSection(name: string, relativeDir: string, include: (file: Galler
     .filter(include)
     .sort((a, b) => compareNames(a.name, b.name));
   return { type: "folder", name, children: files };
+}
+
+function characterAnimationTree(slug: string): GalleryFolder | undefined {
+  if (slug !== "character-animation") return undefined;
+  const setOne = readFolder(
+    path.join(driveRoot, "Character Animation"),
+    "Character Animation",
+    ["Character Animation"],
+  );
+  const setTwo = readFolder(
+    path.join(driveRoot, "Character Animation2"),
+    "Character Animation 2",
+    ["Character Animation2"],
+  );
+  return {
+    type: "folder",
+    name: "Character Animation",
+    children: [
+      setOne,
+      setTwo,
+      {
+        type: "folder",
+        name: "Additional scenes",
+        children: [
+          looseFile("Building burn down.mp4", "imran-drive/Building burn down.mp4", "video"),
+          looseFile("Scene 04 New Updated.mp4", "imran-drive/Scene 04 New Updated.mp4", "video"),
+          looseFile("Scene 09 Updated 02.mp4", "imran-drive/Scene 09 Updated 02.mp4", "video"),
+          looseFile("Snowy scene.mp4", "imran-drive/Snowy scene.mp4", "video"),
+        ],
+      },
+    ],
+  };
 }
 
 function modelingRigTree(slug: string): GalleryFolder | undefined {
@@ -429,6 +455,13 @@ function aiAssistedTree(slug: string): GalleryFolder | undefined {
       ],
     };
   }
+  if (slug === "dorcas-med-animation") {
+    return readFolder(
+      path.join(driveRoot, "Dorcas Med animation"),
+      "Dorcas Med animation",
+      ["Dorcas Med animation"],
+    );
+  }
   return undefined;
 }
 
@@ -471,6 +504,7 @@ function attachCuratedTree(project: Project): WorkProject {
     };
   }
   const tree =
+    characterAnimationTree(project.slug) ??
     modelingRigTree(project.slug) ??
     metaHumanTree(project.slug) ??
     vrProjectTree(project.slug) ??

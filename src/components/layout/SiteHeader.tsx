@@ -41,7 +41,13 @@ export function SiteHeader() {
               </span>
             </Link>
           ))}
-          <button type="button" className="nav-item" aria-expanded={isOpen} aria-haspopup="dialog" onClick={open}>
+          <button
+            type="button"
+            className="nav-item"
+            aria-expanded={isOpen}
+            aria-haspopup="dialog"
+            onClick={(event) => open({ x: event.clientX, y: event.clientY })}
+          >
             <span className="nav-index">04</span>
             <span className="nav-label">
               <span>Contact</span>

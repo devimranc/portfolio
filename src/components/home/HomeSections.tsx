@@ -98,14 +98,17 @@ function PracticeIcon({ icon }: { icon: (typeof practiceLinks)[number]["icon"] }
 
 export function WorkStack({ projects }: { projects: Project[] }) {
   return (
-    <div className="space-y-4">
+    <div className="work-stack">
       {projects.map((project, index) => {
         const cover = project.media[0];
         return (
           <StackCard key={project.slug} index={index} total={projects.length}>
             <div className="flex flex-col justify-center lg:col-span-5">
               <PillLabel>{labelFor(project.category)}</PillLabel>
-              <h3 className="mt-4 text-[1.7rem] font-semibold capitalize leading-tight tracking-tight text-white md:text-[2rem]">
+              <h3
+                data-split-heading
+                className="mt-4 text-[1.7rem] font-semibold capitalize leading-tight tracking-tight text-white md:text-[2rem]"
+              >
                 {project.title}
               </h3>
               <p className="mt-3 max-w-md text-sm leading-relaxed text-white/65">{project.summary}</p>
@@ -118,7 +121,7 @@ export function WorkStack({ projects }: { projects: Project[] }) {
               </Link>
             </div>
             <div className="lg:col-span-7">
-              <TiltFrame className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 bg-[#1a2433] shadow-2xl shadow-[#0e1624]/40">
+              <TiltFrame data-fluid className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 bg-[#1a2433] shadow-2xl shadow-[#0e1624]/40">
                 {cover ? (
                   <ProjectMedia item={cover} cover />
                 ) : (
@@ -163,7 +166,7 @@ export function ProjectStrip({ projects }: { projects: Project[] }) {
                 href={`/work/${project.slug}`}
                 className="home-carousel-card"
               >
-                <div className="home-carousel-media">
+                <div className="home-carousel-media" data-fluid>
                   {cover ? <ProjectMedia item={cover} cover /> : null}
                 </div>
                 <p>{labelFor(project.category)}</p>
@@ -221,7 +224,7 @@ export function ServicesTimeline() {
             index={index}
             marker={<h3 className="home-expertise-title">{service.title}</h3>}
             body={
-              <article className="home-expertise-card">
+              <article className="home-expertise-card" data-glass-tilt>
                 <p>{service.body}</p>
               </article>
             }

@@ -37,6 +37,20 @@ button.service-arrow {
   opacity: 1;
 }
 
+.contact-overlay-motion {
+  transition: none;
+}
+
+.contact-overlay-motion.is-open {
+  opacity: 1;
+}
+
+.contact-overlay-motion .contact-modal {
+  transition: none;
+  opacity: 1;
+  transform: none;
+}
+
 .contact-modal {
   position: relative;
   display: grid;
@@ -66,7 +80,7 @@ button.service-arrow {
 }
 
 .contact-info,
-.contact-form-pane {
+.contact-action-pane {
   padding: 1.7rem 1.5rem 1.5rem;
 }
 
@@ -123,12 +137,24 @@ button.service-arrow {
   font-size: 0.9rem;
 }
 
-.contact-note {
-  margin: 0.8rem 0 0;
-  max-width: 18rem;
-  color: #9aafc4;
-  font-size: 0.82rem;
-  line-height: 1.5;
+.contact-action-pane {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.contact-action-lead {
+  margin: 0;
+  max-width: 22rem;
+  color: #c5d0dc;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.contact-upwork-link {
+  width: fit-content;
+  text-decoration: none;
 }
 
 .contact-close {
@@ -149,64 +175,6 @@ button.service-arrow {
 
 .contact-close:hover {
   background: rgba(213, 222, 234, 0.1);
-}
-
-.contact-form {
-  display: grid;
-  gap: 0.85rem;
-}
-
-.contact-form label {
-  display: grid;
-  gap: 0.35rem;
-  color: #f4f6f8;
-  font-size: 0.82rem;
-  font-weight: 600;
-}
-
-.contact-field {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  border: 1px solid rgba(213, 222, 234, 0.2);
-  border-radius: 0.75rem;
-  background: rgba(18, 26, 38, 0.45);
-  padding: 0 0.75rem;
-  color: #9aafc4;
-}
-
-.contact-field:focus-within {
-  border-color: rgba(213, 222, 234, 0.55);
-  box-shadow: 0 0 0 3px rgba(213, 222, 234, 0.12);
-}
-
-.contact-field input,
-.contact-field textarea {
-  width: 100%;
-  border: 0;
-  background: transparent;
-  color: #f4f6f8;
-  font: inherit;
-  font-weight: 400;
-  padding: 0.75rem 0;
-  outline: none;
-  resize: vertical;
-}
-
-.contact-field textarea {
-  min-height: 7rem;
-}
-
-.contact-form .btn-primary {
-  justify-self: start;
-  margin-top: 0.2rem;
-}
-
-.contact-status {
-  margin: 0;
-  color: #d5deea;
-  font-size: 0.82rem;
-  line-height: 1.45;
 }
 
 @media (max-width: 760px) {

@@ -2,36 +2,49 @@
 
 import { type FC, type MouseEvent, type ReactNode } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
-import { TILT_RANGE, TILT_SPRING } from "@/constants/motion";
+import { TILT_SPRING } from "@/constants/motion";
+
+const SUBTLE_TILT = {
+  x: [5, -5] as [number, number],
+  y: [-7, 7] as [number, number],
+};
 
 interface TiltFrameProps {
   children: ReactNode;
   /** Lifted overlay (badges, actions). Rendered in front of the media. */
   chrome?: ReactNode;
   className?: string;
+  "data-fluid"?: boolean;
 }
 
 /** Pointer-tilt media frame with depth layers for badges. */
-export const TiltFrame: FC<TiltFrameProps> = ({ children, chrome, className }) => {
+export const TiltFrame: FC<TiltFrameProps> = ({ children, chrome, className, ...rest }) => {
   const pointerX = useMotionValue(0.5);
   const pointerY = useMotionValue(0.5);
-  const rotateX = useSpring(useTransform(pointerY, [0, 1], TILT_RANGE.x), TILT_SPRING);
-  const rotateY = useSpring(useTransform(pointerX, [0, 1], TILT_RANGE.y), TILT_SPRING);
+  const rotateX = useSpring(useTransform(pointerY, [0, 1], SUBTLE_TILT.x), TILT_SPRING);
+  const rotateY = useSpring(useTransform(pointerX, [0, 1], SUBTLE_TILT.y), TILT_SPRING);
 
   const handleMove = (event: MouseEvent<HTMLDivElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
-    pointerX.set((event.clientX - bounds.left) / bounds.width);
-    pointerY.set((event.clientY - bounds.top) / bounds.height);
+    const px = (event.clientX - bounds.left) / bounds.width;
+    const py = (event.clientY - bounds.top) / bounds.height;
+    pointerX.set(px);
+    pointerY.set(py);
+    event.currentTarget.style.setProperty("--fluid-glow-x", `${px * 100}%`);
+    event.currentTarget.style.setProperty("--fluid-glow-y", `${py * 100}%`);
   };
 
   return (
-    <div style={{ perspective: "1400px" }} className="relative">
+    <div data-tilt-frame-root style={{ perspective: "1400px" }} className="relative">
       <motion.div
         onMouseMove={handleMove}
-        onMouseLeave={() => {
+        onMouseLeave={(event) => {
           pointerX.set(0.5);
           pointerY.set(0.5);
+          event.currentTarget.style.setProperty("--fluid-glow-x", "50%");
+          event.currentTarget.style.setProperty("--fluid-glow-y", "50%");
         }}
+        {...(rest["data-fluid"] ? { "data-fluid": true } : {})}
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
         className={
           className ??
@@ -39,6 +52,7 @@ export const TiltFrame: FC<TiltFrameProps> = ({ children, chrome, className }) =
         }
       >
         {children}
+        <div className="tilt-frame-glow" aria-hidden />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.06),transparent_45%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(12,20,32,0.28),transparent_45%)]" />
         {chrome}

@@ -37,7 +37,7 @@ function CategoryFallback() {
 function CategoryView({ id }: { id: CategoryId }) {
   const list = workProjectsByCategory(id);
   return (
-    <main className="bg-[#1a2433] text-[#f4f6f8]">
+    <main className="bg-[#1a2433] text-[#f4f6f8]" data-motion-root>
       <div className="site-wrap py-14 md:py-20">
         <CategoryNav active={id} />
         <h1 className="work-rise mt-12 text-3xl font-medium tracking-tight md:text-4xl">

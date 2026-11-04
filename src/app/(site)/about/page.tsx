@@ -78,7 +78,7 @@ function Arrow() {
 
 export default function AboutPage() {
   return (
-    <main className="about-page">
+    <main className="about-page" data-motion-root>
       <section className="about-stage site-wrap">
         <div className="about-copy">
           <p className="about-kicker">About</p>
@@ -120,7 +120,7 @@ export default function AboutPage() {
             video and Unreal Engine.
           </p>
           <h3>Core Expertise</h3>
-          <ul className="about-expertise">
+          <ul className="about-expertise" data-reveal-stagger>
             {expertise.map((item) => (
               <li key={item.label}>
                 <ExpertiseIcon name={item.icon} />

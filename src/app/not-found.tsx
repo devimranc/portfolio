@@ -18,7 +18,7 @@ export default function NotFound() {
         This page is not available
       </h1>
       <p className="mt-4 max-w-md text-black/75">
-        The link may be out of date. Work, services, and the contact form are
+        The link may be out of date. Work, services, and contact are
         still available.
       </p>
       <Link href="/" className="mt-8 inline-block text-sm underline">

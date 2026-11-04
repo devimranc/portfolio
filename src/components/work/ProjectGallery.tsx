@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { mediaSrc } from "@/components/work/ProjectMedia";
 import { categoryLabel, type MediaItem } from "@/data/portfolio";
+import { projectRichText } from "@/components/work/projectRichText";
 import type { GalleryFile, GalleryFolder, WorkProject } from "@/data/zain-drive";
 import "@/styles/project-detail.css";
 
@@ -85,23 +87,44 @@ function pageList(current: number, total: number) {
   return [1, "…", current, "…", total] as const;
 }
 
+function DownloadLink({ file, src }: { file: ListedFile; src: string }) {
+  if (!needsDownload(file)) return null;
+  return (
+    <a className="project-download" href={src} download={file.name}>
+      Download {file.name}
+    </a>
+  );
+}
+
 function FilePreview({ file, expanded = false }: { file: ListedFile; expanded?: boolean }) {
   const src = mediaSrc(file.src);
   const { extension } = assetLabel(file.name);
-  const download = needsDownload(file) ? (
-    <a href={src} download={file.name}>
-      Download {file.name}
-    </a>
-  ) : null;
 
   if (file.kind === "image") {
-    return <img src={src} alt={file.name} />;
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt={file.name}
+        className={expanded ? "project-lightbox-media" : undefined}
+        decoding="async"
+      />
+    );
   }
   if (file.kind === "video") {
     return (
-      <video controls playsInline preload={expanded ? "metadata" : "none"} aria-label={file.name}>
-        <source src={src} type={videoType(file.name)} />
-      </video>
+      <>
+        <video
+          controls
+          playsInline
+          preload={expanded ? "metadata" : "none"}
+          aria-label={file.name}
+          className={expanded ? "project-lightbox-media" : undefined}
+        >
+          <source src={src} type={videoType(file.name)} />
+        </video>
+        <DownloadLink file={file} src={src} />
+      </>
     );
   }
   if (file.kind === "audio") {
@@ -150,23 +173,58 @@ export function ProjectGallery({ project, asset }: { project: WorkProject; asset
   const initial = tabs.find((label) => label.toLowerCase() === asset) ?? "Models";
   const [tab, setTab] = useState<TabLabel>(initial);
   const [page, setPage] = useState(1);
-  const [view, setView] = useState<"grid" | "list">("grid");
   const [preview, setPreview] = useState<ListedFile | null>(null);
+  const portalReady = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   const files = buckets[tab];
   const pageCount = Math.max(1, Math.ceil(files.length / PAGE_SIZE));
   const current = Math.min(page, pageCount);
   const visible = files.slice((current - 1) * PAGE_SIZE, current * PAGE_SIZE);
   const pages = pageList(current, pageCount);
+  const previewIndex = preview ? files.findIndex((file) => file.src === preview.src) : -1;
+  const canStepPreview = files.length > 1 && previewIndex >= 0;
+
+  const stepPreview = useCallback(
+    (delta: number) => {
+      if (!preview || files.length <= 1) return;
+      const index = files.findIndex((file) => file.src === preview.src);
+      if (index < 0) return;
+      const nextIndex = (index + delta + files.length) % files.length;
+      setPage(Math.floor(nextIndex / PAGE_SIZE) + 1);
+      setPreview(files[nextIndex]);
+    },
+    [files, preview],
+  );
 
   useEffect(() => {
     if (!preview) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.classList.add("project-lightbox-open");
+    document.body.style.overflow = "hidden";
+
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setPreview(null);
+      if (!canStepPreview) return;
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        stepPreview(-1);
+      }
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        stepPreview(1);
+      }
     };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [preview]);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.classList.remove("project-lightbox-open");
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [preview, canStepPreview, stepPreview]);
 
   function selectTab(label: TabLabel) {
     setTab(label);
@@ -189,10 +247,10 @@ export function ProjectGallery({ project, asset }: { project: WorkProject; asset
           <p className="project-count">
             {totalFiles} {totalFiles === 1 ? "file" : "files"}
           </p>
-          {project.summary ? <p className="project-summary">{project.summary}</p> : null}
+          {project.summary ? <p className="project-summary">{projectRichText(project.summary)}</p> : null}
           {project.details.map((detail) => (
             <p key={detail} className="project-detail">
-              {detail}
+              {projectRichText(detail)}
             </p>
           ))}
           <nav className="project-side-nav" aria-label="Project assets">
@@ -226,25 +284,13 @@ export function ProjectGallery({ project, asset }: { project: WorkProject; asset
               </button>
             ))}
           </div>
-          <div className="project-view">
-            <button type="button" aria-label="Grid view" aria-pressed={view === "grid"} onClick={() => setView("grid")}>
-              <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4">
-                <path fill="currentColor" d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z" />
-              </svg>
-            </button>
-            <button type="button" aria-label="List view" aria-pressed={view === "list"} onClick={() => setView("list")}>
-              <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4">
-                <path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
-              </svg>
-            </button>
-          </div>
         </div>
 
-        <div className="project-panel" key={`${tab}-${current}-${view}`}>
+        <div className="project-panel" key={`${tab}-${current}`}>
           {visible.length === 0 ? (
             <p className="project-empty">No files in this group.</p>
           ) : (
-            <div className={`project-grid${view === "list" ? " is-list" : ""}`}>
+            <div className="project-grid">
               {visible.map((file) => (
                 <article key={file.src} className="project-card">
                   <div className="project-card-media">
@@ -255,15 +301,6 @@ export function ProjectGallery({ project, asset }: { project: WorkProject; asset
                       <path fill="none" stroke="currentColor" strokeWidth="1.8" d="M9 5H5v4M15 5h4v4M9 19H5v-4M15 19h4v-4" />
                     </svg>
                   </button>
-                  <div className="project-card-body">
-                    <p>{file.name}</p>
-                    {file.folder ? <p>{file.folder}</p> : null}
-                    {needsDownload(file) ? (
-                      <a href={mediaSrc(file.src)} download={file.name}>
-                        Download
-                      </a>
-                    ) : null}
-                  </div>
                 </article>
               ))}
             </div>
@@ -295,18 +332,82 @@ export function ProjectGallery({ project, asset }: { project: WorkProject; asset
         ) : null}
       </section>
 
-      {preview ? (
-        <div className="project-lightbox" role="dialog" aria-modal="true" aria-label={preview.name} onClick={() => setPreview(null)}>
-          <div className="project-lightbox-frame" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="project-lightbox-close" aria-label="Close preview" onClick={() => setPreview(null)}>
-              <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4">
-                <path fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" d="M6 6l12 12M18 6 6 18" />
-              </svg>
-            </button>
-            <FilePreview file={preview} expanded />
-          </div>
-        </div>
-      ) : null}
+      {preview && portalReady
+        ? createPortal(
+            <div
+              className="project-lightbox"
+              role="dialog"
+              aria-modal="true"
+              aria-label={preview.name}
+              onClick={() => setPreview(null)}
+            >
+              <button
+                type="button"
+                className="project-lightbox-close"
+                aria-label="Close preview"
+                onClick={() => setPreview(null)}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4">
+                  <path
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    d="M6 6l12 12M18 6 6 18"
+                  />
+                </svg>
+              </button>
+              {canStepPreview ? (
+                <>
+                  <button
+                    type="button"
+                    className="project-lightbox-nav prev"
+                    aria-label="Previous asset"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      stepPreview(-1);
+                    }}
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden className="h-5 w-5">
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M14 6 8 12l6 6"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    className="project-lightbox-nav next"
+                    aria-label="Next asset"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      stepPreview(1);
+                    }}
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden className="h-5 w-5">
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m10 6 6 6-6 6"
+                      />
+                    </svg>
+                  </button>
+                </>
+              ) : null}
+              <div className="project-lightbox-viewport" onClick={(event) => event.stopPropagation()}>
+                <FilePreview key={preview.src} file={preview} expanded />
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   );
 }
