@@ -7,6 +7,7 @@ let scrollLockDepth = 0;
 
 export function setLenisInstance(instance: Lenis | null) {
   lenisRef = instance;
+  if (instance && scrollLockDepth > 0) instance.stop();
 }
 
 export function lockMotionScroll() {

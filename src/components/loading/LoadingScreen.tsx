@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { lockMotionScroll, scrollMotionToTop, unlockMotionScroll } from "@/lib/motion/lenis-instance";
 import "@/styles/loading.css";
 
 const roles = ["3D Animator", "Motion Designer"];
@@ -71,12 +72,13 @@ export function LoadingScreen({
     return () => window.clearTimeout(reveal);
   }, [clicked, onDone, onReveal]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!onDone) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    scrollMotionToTop();
+    lockMotionScroll();
     return () => {
-      document.body.style.overflow = previous;
+      scrollMotionToTop();
+      unlockMotionScroll();
     };
   }, [onDone]);
 

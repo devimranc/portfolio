@@ -1,27 +1,61 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useState } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { LoadingScreen } from "@/components/loading/LoadingScreen";
 import { requestMotionRevealRefresh } from "@/lib/motion/fluid-events";
 
 const INTRO_STORAGE_KEY = "home-intro-complete";
+
+type IntroState = {
+  introReady: boolean;
+  reveal: () => void;
+  finish: () => void;
+};
+
+const IntroContext = createContext<IntroState | null>(null);
 
 function readIntroComplete() {
   if (typeof window === "undefined") return false;
   return sessionStorage.getItem(INTRO_STORAGE_KEY) === "1";
 }
 
-export function HomeIntro({ children }: { children: React.ReactNode }) {
+export function HomeIntroFrame({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const [introReady, setIntroReady] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
 
   useLayoutEffect(() => {
-    if (readIntroComplete()) {
+    if (!isHome || readIntroComplete()) {
       setIntroReady(true);
       setShowLoader(false);
-      requestAnimationFrame(() => requestMotionRevealRefresh());
+      if (isHome) requestAnimationFrame(() => requestMotionRevealRefresh());
     }
-  }, []);
+  }, [isHome]);
+
+  function reveal() {
+    setIntroReady(true);
+    sessionStorage.setItem(INTRO_STORAGE_KEY, "1");
+    requestAnimationFrame(() => requestMotionRevealRefresh());
+  }
+
+  function finish() {
+    setShowLoader(false);
+    requestMotionRevealRefresh();
+  }
+
+  return (
+    <IntroContext.Provider value={{ introReady, reveal, finish }}>
+      {children}
+      {isHome && showLoader ? <LoadingScreen onReveal={reveal} onDone={finish} /> : null}
+    </IntroContext.Provider>
+  );
+}
+
+export function HomeIntro({ children }: { children: React.ReactNode }) {
+  const intro = useContext(IntroContext);
+  const introReady = intro?.introReady ?? true;
 
   useEffect(() => {
     if (!introReady) return;
@@ -40,23 +74,5 @@ export function HomeIntro({ children }: { children: React.ReactNode }) {
     return () => observer.disconnect();
   }, [introReady]);
 
-  function handleIntroReveal() {
-    setIntroReady(true);
-    sessionStorage.setItem(INTRO_STORAGE_KEY, "1");
-    requestAnimationFrame(() => requestMotionRevealRefresh());
-  }
-
-  function handleIntroDone() {
-    setShowLoader(false);
-    requestMotionRevealRefresh();
-  }
-
-  return (
-    <>
-      {showLoader ? (
-        <LoadingScreen onReveal={handleIntroReveal} onDone={handleIntroDone} />
-      ) : null}
-      <div className={`home-landing${introReady ? " home-ready" : ""}`}>{children}</div>
-    </>
-  );
+  return <div className={`home-landing${introReady ? " home-ready" : ""}`}>{children}</div>;
 }

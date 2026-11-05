@@ -10,6 +10,7 @@ html.lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
 }
 
+html.lenis-stopped,
 html.lenis.lenis-stopped {
   overflow: hidden;
 }
