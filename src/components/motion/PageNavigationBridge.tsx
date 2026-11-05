@@ -65,16 +65,19 @@ export function PageNavigationBridge() {
         ensureGsapPlugins();
         triggerFluidRipple(event.clientX, event.clientY, 1.15);
 
-        const pulseTarget =
-          anchor.closest<HTMLElement>(".work-project-card, .home-carousel-card, [data-glass-tilt]") ??
-          anchor;
+        const pulseTarget = anchor.closest(".site-header")
+          ? null
+          : (anchor.closest<HTMLElement>(".work-project-card, .home-carousel-card, [data-glass-tilt]") ??
+            anchor);
 
-        await gsap.to(pulseTarget, {
-          scale: CLICK_PULSE_SCALE,
-          duration: 0.1,
-          ease: "power2.out",
-          force3D: true,
-        });
+        if (pulseTarget) {
+          await gsap.to(pulseTarget, {
+            scale: CLICK_PULSE_SCALE,
+            duration: 0.1,
+            ease: "power2.out",
+            force3D: true,
+          });
+        }
 
         await prepareRouteNavigation(router, destination);
         await animatePageExit(content, overlay);

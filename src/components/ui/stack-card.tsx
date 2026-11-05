@@ -48,18 +48,6 @@ export const StackCard: FC<StackCardProps> = ({ index, total, children, accent }
   );
 };
 
-export const IndexWatermark: FC<{ value: string }> = ({ value }) => (
-  <span className="text-[7rem] font-black leading-none tracking-tighter text-white/10 md:text-[10rem]">
-    {value}
-  </span>
-);
-
-export const IconTile: FC<{ children: ReactNode }> = ({ children }) => (
-  <div className="absolute right-0 top-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/15 bg-white/[0.06] backdrop-blur-md md:h-20 md:w-20">
-    {children}
-  </div>
-);
-
 export const PillLabel: FC<{ children: ReactNode }> = ({ children }) => (
   <span className="w-fit rounded-full border border-white/20 px-3 py-1 text-[10px] uppercase tracking-[0.28em] text-white/60">
     {children}

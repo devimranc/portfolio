@@ -61,13 +61,3 @@ export const TiltFrame: FC<TiltFrameProps> = ({ children, chrome, className, ...
     </div>
   );
 };
-
-export const LiveDot: FC = () => (
-  <span className="relative flex h-1.5 w-1.5">
-    <span className="absolute inset-0 animate-ping rounded-full bg-[#b7c6d6] opacity-75" />
-    <span className="relative h-1.5 w-1.5 rounded-full bg-[#d5deea]" />
-  </span>
-);
-
-export const MEDIA_BADGE =
-  "rounded-full border border-white/15 bg-[#1a2433]/70 px-3 py-1 text-[10px] uppercase tracking-[0.3em] backdrop-blur-md";

@@ -90,14 +90,14 @@ export default function AboutPage() {
           <p className="about-role">3D Animator & Motion Designer</p>
           <div className="about-bio">
             <p>
-              Imran is a 3D artist, animator, and motion designer working with AI
+              I am a 3D artist, animator, and motion designer working with AI
               video and Unreal Engine.
             </p>
             <p>
-              Documented work includes character cleanup, rigging, and Unity
+              My documented work includes character cleanup, rigging, and Unity
               integration; combat animation for a retro game character; character
               rigs integrated into Unreal Engine; a VR photo gallery environment;
-              medical animation for Memsel, with further detail withheld under NDA;
+              medical product animation, with further detail withheld under NDA;
               product modeling, PBR materials, and photorealistic visualization;
               product animation; and architectural visualization.
             </p>
@@ -116,7 +116,7 @@ export default function AboutPage() {
         <aside className="about-panel">
           <h2>What I Do</h2>
           <p>
-            Imran is a 3D artist, animator, and motion designer working with AI
+            I am a 3D artist, animator, and motion designer working with AI
             video and Unreal Engine.
           </p>
           <h3>Core Expertise</h3>

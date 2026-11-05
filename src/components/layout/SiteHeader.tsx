@@ -15,7 +15,7 @@ export function SiteHeader() {
   const { open, isOpen } = useContact();
 
   return (
-    <header className="site-header sticky top-0 z-20 border-b border-[#d5deea]/15 bg-[#121a26]/95 text-[#f4f6f8] backdrop-blur-md">
+    <header className="site-header fixed inset-x-0 top-0 z-[80] border-b border-[#d5deea]/15 bg-[#121a26]/95 text-[#f4f6f8] backdrop-blur-md">
       <div className="site-wrap flex items-center justify-between gap-6 py-3.5">
         <Link href="/" className="flex items-center gap-2.5 text-[#f4f6f8]">
           <span className="h-3.5 w-3.5 rounded-[3px] bg-[#e8eef5]" aria-hidden />

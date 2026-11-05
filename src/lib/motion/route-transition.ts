@@ -1,6 +1,5 @@
 "use client";
 
-export const ROUTE_ENTER_FALLBACK_MS = 350;
 export const ROUTE_PREFETCH_MAX_MS = 2400;
 
 function waitFrames(count = 2): Promise<void> {
@@ -40,43 +39,4 @@ export async function prepareRouteNavigation(
     waitFrames(3),
     new Promise<void>((resolve) => window.setTimeout(resolve, 180)),
   ]);
-}
-
-/** Wait until swapped page content is in the DOM (or timeout). */
-export function waitForPageContentReady(
-  root: HTMLElement,
-  timeoutMs = ROUTE_ENTER_FALLBACK_MS,
-): Promise<void> {
-  return new Promise((resolve) => {
-    let done = false;
-    let observer: MutationObserver | null = null;
-
-    const finish = () => {
-      if (done) return;
-      done = true;
-      observer?.disconnect();
-      window.clearTimeout(timer);
-      resolve();
-    };
-
-    const timer = window.setTimeout(finish, timeoutMs);
-
-    const hasMeaningfulContent = () => {
-      if (root.childElementCount === 0) return false;
-      const text = root.textContent?.trim() ?? "";
-      if (text.length > 24) return true;
-      return root.querySelector("main, section, article, h1, img, video, canvas") !== null;
-    };
-
-    if (hasMeaningfulContent()) {
-      void waitFrames(2).then(finish);
-      return;
-    }
-
-    observer = new MutationObserver(() => {
-      if (hasMeaningfulContent()) finish();
-    });
-
-    observer.observe(root, { childList: true, subtree: true, characterData: true });
-  });
 }

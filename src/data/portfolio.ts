@@ -14,7 +14,8 @@ export type CategoryId =
   | "unreal-vr"
   | "architecture"
   | "ai-video"
-  | "motion-2d";
+  | "motion-2d"
+  | "medical";
 
 export type MediaItem = {
   src: string;
@@ -49,6 +50,7 @@ export const categories: { id: CategoryId; label: string }[] = [
   { id: "architecture", label: "Architectural Visualization" },
   { id: "ai-video", label: "AI-Assisted Video & Animation" },
   { id: "motion-2d", label: "2D Animation & Motion Design" },
+  { id: "medical", label: "Medical" },
 ];
 
 const d = (path: string) => `/data/${path}`;
@@ -56,7 +58,7 @@ const d = (path: string) => `/data/${path}`;
 export const projects: Project[] = [
   {
     slug: "damir-project",
-    title: "Damir Project – Cleanup, Rigging and Procedural Animation",
+    title: "Cleanup, Rigging and Procedural Animation",
     category: "game-character",
     summary:
       "I received a character model generated using Meshy AI and Mixamo. I cleaned up the asset, improved topology and UVs, set up accurate rigging, and integrated it into Unity for procedural animation. The goal was to turn the generated starting asset into a cleaner, usable character setup for an interactive project.",
@@ -65,29 +67,32 @@ export const projects: Project[] = [
       {
         kind: "image",
         src: d("zain-drive/Damir_s work/Modelling/image (31).png"),
-        alt: "image (31).png",
+        alt: "Character model still",
       },
     ],
   },
   {
     slug: "sergio-project",
-    title: "Sergio Project – Retro Game Character Animation",
+    title: "Retro Game Character Animation – The Prison",
     category: "game-character",
     summary:
-      "Working from the client's game-character reference, I handled rigging and combat-related animation for a retro-style game character. The supplied clips cover combat and hit reactions, blade and pistol attacks, and a run cycle, alongside the rigging example.",
-    details: [],
+      "For The Prison, a browser remake of the 1999 Spanish MMO La Prisión, I handled rigging and combat-related animation for retro-style game characters. The clips cover combat and hit reactions, blade and pistol attacks, and a run cycle, alongside rigging examples.",
+    details: [
+      "The Prison is a faithful browser remake of the 1999 Spanish MMO La Prisión, featuring approximately 230 players and 4,000 NPCs in a full prison environment.",
+      "Live game: https://theprison.com",
+    ],
     media: [
       {
         kind: "video",
         src: d("zain-drive/Sergio_s work/Retro Combat reactions/Combat reactions.mp4"),
-        alt: "Combat reactions.mp4",
+        alt: "Combat reactions",
       },
     ],
   },
   {
     slug: "character-rigs-for-unreal-engine",
     title: "Character Rigs for Unreal Engine",
-    category: "game-character",
+    category: "unreal-vr",
     summary:
       "I created rigs for character models provided by the client and integrated them into Unreal Engine. The collection includes an idle animation and examples for cop, female, and male characters.",
     details: [],
@@ -96,6 +101,35 @@ export const projects: Project[] = [
         kind: "image",
         src: d("zain-drive/Rachel Rig/Idle rig/Rig point.png"),
         alt: "Rig point.png",
+      },
+    ],
+  },
+  {
+    slug: "unreal-realtime-and-vr",
+    title: "Unreal Engine real-time & VR",
+    category: "unreal-vr",
+    summary:
+      "Real-time Unreal Engine work, including VR interior walkthroughs, an industrial bench scene, mobile VR, game-development previews, and logo animations.",
+    details: [],
+    media: [
+      {
+        kind: "video",
+        src: d("zain-drive/VR work/Interior/House Tour.mp4"),
+        alt: "VR interior walkthrough",
+      },
+    ],
+  },
+  {
+    slug: "unreal-character-demo",
+    title: "Unreal Character Demo",
+    category: "unreal-vr",
+    summary: "An Unreal Engine character rendering demo.",
+    details: [],
+    media: [
+      {
+        kind: "video",
+        src: d("zain-drive/Character Animation2/Unreal Demo with CGI_/Rendering demo.mp4"),
+        alt: "Unreal Character Demo",
       },
     ],
   },
@@ -157,11 +191,53 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "cinematic-fight-scene",
+    title: "Cinematic Fight Scene",
+    category: "character-showcase",
+    summary: "A cinematic character fight sequence with visual effects.",
+    details: [],
+    media: [
+      {
+        kind: "video",
+        src: d("zain-drive/Character Animation/superhero sequence_/Cinematic Fight.mp4"),
+        alt: "Cinematic Fight Scene",
+      },
+    ],
+  },
+  {
+    slug: "cinematic-forest-environment",
+    title: "Cinematic Forest Environment",
+    category: "character-showcase",
+    summary: "A cinematic character scene set in a forest environment.",
+    details: [],
+    media: [
+      {
+        kind: "video",
+        src: d("zain-drive/Character Animation2/Cinematic/Forest Environment/cinematic Forest.mp4"),
+        alt: "Cinematic Forest Environment",
+      },
+    ],
+  },
+  {
+    slug: "boxing-scene-animation",
+    title: "Boxing Scene Animation",
+    category: "character-showcase",
+    summary: "A character boxing performance animation.",
+    details: [],
+    media: [
+      {
+        kind: "video",
+        src: d("zain-drive/Character Animation2/Boxing animation/Boxing.mp4"),
+        alt: "Boxing Scene Animation",
+      },
+    ],
+  },
+  {
     slug: "character-animation",
     title: "Character Animation",
     category: "character-rigging",
     summary:
-      "Character performance clips from two animation sets: clothing updates, fighting with VFX, boxing, idles, horse stills and motion, shotgun recoil, superhero cinematics, Monty Python-style and comedic shots, short monologues, infiltration drafts, an Unreal rendering demo, and additional Imran Drive scenes.",
+      "Character performance clips from two animation sets: clothing updates, fighting with VFX, idles, horse stills and motion, shotgun recoil, a short superhero cinematic, Monty Python-style and comedic shots, short monologues, infiltration drafts, and additional Imran Drive scenes.",
     details: [],
     media: [
       {
@@ -201,6 +277,20 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "clown-fish-rig",
+    title: "Clown Fish Rig",
+    category: "character-modeling-rigging",
+    summary: "An animal rigging example for a clown fish.",
+    details: [],
+    media: [
+      {
+        kind: "video",
+        src: d("zain-drive/Rigging Stuff/Clown fish rig/Fish rig.mp4"),
+        alt: "Clown Fish Rig",
+      },
+    ],
+  },
+  {
     slug: "stylized-cartoon-character-models",
     title: "Stylized / Cartoon Character Models",
     category: "character-modeling-rigging",
@@ -219,8 +309,7 @@ export const projects: Project[] = [
     slug: "metahuman-and-3d-human-assets",
     title: "MetaHuman and 3D Human Assets",
     category: "metahuman",
-    summary:
-      "This collection includes a full-body human, realistic male and female characters, and a low-poly 3D human.",
+    summary: "A full-body human asset set, shown as finished stills.",
     details: [],
     media: [
       {
@@ -231,10 +320,164 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "female-model",
+    title: "Female Model",
+    category: "metahuman",
+    summary: "A realistic female character model, shown as a set of stills.",
+    details: [],
+    media: [
+      {
+        kind: "image",
+        src: d("MetaHuman/realistic-female/1.webp"),
+        alt: "Female Model",
+      },
+    ],
+  },
+  {
+    slug: "low-poly-male-model",
+    title: "Low-Poly Male Model",
+    category: "metahuman",
+    summary: "A low-poly male character model, shown as a set of stills.",
+    details: [],
+    media: [
+      {
+        kind: "image",
+        src: d("MetaHuman/low-poly 3d/1.webp"),
+        alt: "Low-Poly Male Model",
+      },
+    ],
+  },
+  {
+    slug: "realistic-male-face",
+    title: "Realistic Male Face",
+    category: "metahuman",
+    summary: "A realistic male face study, shown as a set of stills.",
+    details: [],
+    media: [
+      {
+        kind: "image",
+        src: d("MetaHuman/realistic-male/1.webp"),
+        alt: "Realistic Male Face",
+      },
+    ],
+  },
+  {
+    slug: "anatomy-model",
+    title: "Anatomy Model",
+    category: "medical",
+    summary: "Medical anatomy stills of a human model.",
+    details: [],
+    media: [
+      {
+        kind: "image",
+        src: d("zain-drive/Character Models/Medical Anatomy/1.jpg"),
+        alt: "Anatomy Model",
+      },
+    ],
+  },
+  {
+    slug: "medical-animation-explainers",
+    title: "Medical Animation & Explainers",
+    category: "medical",
+    summary: "Medical explainer clips covering dental surgery, human anatomy, and a Foley catheter system.",
+    details: [],
+    media: [
+      {
+        kind: "video",
+        src: d("zain-drive/Medical animation/Dental surgery.mp4"),
+        alt: "Dental surgery",
+      },
+    ],
+  },
+  {
+    slug: "blood-flow-animation",
+    title: "Blood Flow Animation",
+    category: "medical",
+    summary: "A medical animation of blood flow.",
+    details: [],
+    media: [
+      {
+        kind: "video",
+        src: d("zain-drive/Medical animation/Blood flow animation/Blood Flow Animation.mp4"),
+        alt: "Blood Flow Animation",
+      },
+    ],
+  },
+  {
+    slug: "prosthetic-leg-showcase",
+    title: "Prosthetic Leg Showcase",
+    category: "medical",
+    summary: "A showcase animation of a prosthetic leg.",
+    details: [],
+    media: [
+      {
+        kind: "video",
+        src: d("zain-drive/Medical animation/Prosthetic leg.mp4"),
+        alt: "Prosthetic Leg Showcase",
+      },
+    ],
+  },
+  {
+    slug: "superhero-character",
+    title: "Superhero",
+    category: "character-modeling",
+    featured: true,
+    summary: "A superhero character model, shown as finished stills.",
+    details: [],
+    media: [
+      {
+        kind: "image",
+        src: d("zain-drive/Character Models/Superhero/1.webp"),
+        alt: "Superhero",
+      },
+    ],
+  },
+  {
+    slug: "construction-worker-character",
+    title: "Construction Worker",
+    category: "character-modeling",
+    summary: "A construction worker character model, shown as finished stills.",
+    details: [],
+    media: [
+      {
+        kind: "image",
+        src: d("zain-drive/Character Models/Construction worker/1.webp"),
+        alt: "Construction Worker",
+      },
+    ],
+  },
+  {
+    slug: "witch-character",
+    title: "Witch Character",
+    category: "character-modeling",
+    summary: "A witch character model, shown as stills and a short clip.",
+    details: [],
+    media: [
+      {
+        kind: "image",
+        src: d("zain-drive/Character Models/Witch character/1.webp"),
+        alt: "Witch Character",
+      },
+    ],
+  },
+  {
+    slug: "sci-fi-character",
+    title: "Sci-fi Character",
+    category: "character-modeling",
+    summary: "A sci-fi character model, shown as stills and a robot character clip.",
+    details: [],
+    media: [
+      {
+        kind: "image",
+        src: d("zain-drive/Character Models/Sci-fi Character/1.jpg"),
+        alt: "Sci-fi Character",
+      },
+    ],
+  },
+  {
     slug: "stylized-character",
     title: "Stylized character",
     category: "character-modeling",
-    featured: true,
     summary:
       "I created a stylized male character and prepared full-body and close-up stills for the set. A separate clip shows the rigged model with facial expressions, so the work covers both the finished model and how the face performs.",
     details: [
@@ -280,7 +523,6 @@ export const projects: Project[] = [
     slug: "vr-photo-gallery",
     title: "VR Photo Gallery Environment",
     category: "vr-project",
-    featured: true,
     summary:
       "Working from a provided reference, I created a photo-gallery environment and its 3D models, then integrated the environment into VR for client testing. The project includes the reference, the models, and an animation preview of the space.",
     details: [
@@ -618,10 +860,10 @@ export const projects: Project[] = [
   },
   {
     slug: "dorcas-med-animation",
-    title: "Dorcas Med animation",
+    title: "Medical product animation",
     category: "ai-assisted",
     summary:
-      "I created 3 animations for 2 different products for a Medical company, Memsel https://www.memsel.com. I created Multiple shots, with blood spurting from the wound scenes, cross-sections, a soldier bandaged and injured, hospital shots, and a helicopter carrying the soldier for safety.",
+      "I created three animations for two medical products, with wound and cross-section shots, a bandaged and injured soldier, hospital scenes, and a helicopter evacuation sequence. Company site: https://www.memsel.com",
     details: [
       "Some deliverables remain private under client NDA.",
     ],
@@ -629,12 +871,12 @@ export const projects: Project[] = [
       {
         kind: "video",
         src: d("zain-drive/Dorcas Med animation/MedDefender/wounded soldier with blood.mp4"),
-        alt: "Dorcas Med animation",
+        alt: "Medical product animation",
       },
       {
         kind: "file",
         src: d("imran-drive/JOB DESCRIPTION_.docx"),
-        alt: "Memsel job description",
+        alt: "Job description document",
       },
     ],
   },
@@ -770,22 +1012,23 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "stinkin-awesome",
-    title: "Stinkin Awesome",
-    category: "character-rigging",
-    summary: "A seven-minute 4K animation.",
+    slug: "childrens-cartoon-animation-episode-1",
+    title: "Children’s Cartoon Animation — Episode 1",
+    category: "motion-2d",
+    summary:
+      "I created the complete animated episode, including character modeling, character rigging, lip-sync, environment and prop creation, lighting, and materials. The client provided the voiceover. This was the first episode in a new children's series created to entertain young viewers.",
     details: [],
     media: [
       {
         kind: "video",
         src: d("zain-drive/Stinkin_Awesome_4K-001.mp4"),
-        alt: "Stinkin Awesome",
+        alt: "Children’s Cartoon Animation — Episode 1",
       },
     ],
   },
   {
     slug: "rita-ai-scenes",
-    title: "Rita AI scenes",
+    title: "AI-assisted Parasite scenes",
     category: "ai-video",
     summary:
       "AI-assisted Parasite and IronBlood scenes, with monster, prom, and saving-the-principal episodes, plus the scripts and production files stored with them.",
@@ -795,20 +1038,6 @@ export const projects: Project[] = [
         kind: "video",
         src: d("imran-drive/Rita AI scenes/Monster/Parasite_Ep POV Monster-FA.mp4"),
         alt: "Parasite monster episode",
-      },
-    ],
-  },
-  {
-    slug: "druo-about-us",
-    title: "DRUO About Us",
-    category: "product-animation",
-    summary: "A short about-us voiceover for DRUO.",
-    details: [],
-    media: [
-      {
-        kind: "video",
-        src: d("imran-drive/DRUO About Us (Just Voiceover) V 2.0_10sec.mp4"),
-        alt: "DRUO about us voiceover",
       },
     ],
   },
@@ -847,10 +1076,6 @@ export const projects: Project[] = [
   },
 ];
 
-export function getProject(slug: string) {
-  return projects.find((project) => project.slug === slug);
-}
-
 export function categoryLabel(id: CategoryId) {
   return categories.find((category) => category.id === id)?.label ?? id;
 }
@@ -859,27 +1084,16 @@ export function isCategoryId(value: string): value is CategoryId {
   return categories.some((category) => category.id === value);
 }
 
-export function projectsByCategory(id: CategoryId) {
-  return projects.filter((project) => project.category === id);
-}
-
 export function coverMedia(items: MediaItem[]) {
   return items.find((item) => item.kind === "image") ?? items[0];
 }
 
-export function categoryCover(id: CategoryId) {
-  const list = projectsByCategory(id);
-  for (const project of list) {
-    const image = project.media.find((item) => item.kind === "image");
-    if (image) return image;
-  }
-  for (const project of list) {
-    if (project.media[0]) return project.media[0];
-  }
-  return undefined;
-}
-
 export const services = [
+  {
+    id: "ai-video",
+    title: "AI-Assisted Video Production",
+    body: "AI-assisted environment video, including a rain environment, plus other assisted sequences such as product and brand animations. Supplied AI-generated character models have also been cleaned up and rigged for production use, so a generated start can be finished for animation.",
+  },
   {
     id: "3d-modeling",
     title: "3D Modeling",
@@ -893,7 +1107,7 @@ export const services = [
   {
     id: "product-visualization",
     title: "Product Visualization & Animation",
-    body: "PBR material, lighting, and camera refinement for photorealistic product stills, along with product installation and assembly animation. The stills include sets such as the book and camera, and exploded views where the parts need to be shown. Medical product animation has also been delivered for Memsel, with the footage kept private under NDA.",
+    body: "PBR material, lighting, and camera refinement for photorealistic product stills, along with product installation and assembly animation. The stills include sets such as the book and camera, and exploded views where the parts need to be shown. Medical product animation has also been delivered under NDA, with the footage kept private.",
   },
   {
     id: "unreal-vr",
@@ -904,10 +1118,5 @@ export const services = [
     id: "architecture",
     title: "Architectural Visualization",
     body: "Interior stills and camera walkthroughs of houses and a villa exterior. The visualizations cover residential interiors and an exterior view, using camera movement to show how each space reads.",
-  },
-  {
-    id: "ai-video",
-    title: "AI-Assisted Video Production",
-    body: "AI-assisted environment video, including a rain environment, plus other assisted sequences such as product and brand animations. Supplied AI-generated character models have also been cleaned up and rigged for production use, so a generated start can be finished for animation.",
   },
 ];

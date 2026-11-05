@@ -46,6 +46,12 @@ const gameCharacterFolders: Record<string, string> = {
   "character-rigs-for-unreal-engine": "Rachel Rig",
 };
 
+const gameCharacterGalleryLabels: Partial<Record<string, string>> = {
+  "damir-project": "Character cleanup and rigging",
+  "sergio-project": "Retro MMO character animation",
+  "character-rigs-for-unreal-engine": "Unreal Engine character rigs",
+};
+
 /** Drive folders that already have a dedicated curated Work project (same work, richer gallery). */
 const foldersPublishedOnCuratedProjects = new Set([
   "2D", // motion-design (Zain 2D clips + Imran motion graphics)
@@ -54,6 +60,12 @@ const foldersPublishedOnCuratedProjects = new Set([
   "Dorcas Med animation", // dorcas-med-animation
   "Product Installation", // product-animation
   "VR work", // vr-photo-gallery
+]);
+
+/** Assigned inventory folders kept on disk but not published as Work cards. */
+const driveFoldersHiddenFromWork = new Set([
+  "Christian SaaS explainer",
+  "Stadium unity work",
 ]);
 
 function compareNames(a: string, b: string) {
@@ -190,9 +202,44 @@ function buildDriveProjects(): WorkProject[] {
   const usedSlugs = new Set(curatedProjects.map((project) => project.slug));
   const reserved = new Set(Object.values(gameCharacterFolders));
   return assigned
-    .filter((folder) => !reserved.has(folder.name) && !foldersPublishedOnCuratedProjects.has(folder.name))
+    .filter(
+      (folder) =>
+        !reserved.has(folder.name) &&
+        !foldersPublishedOnCuratedProjects.has(folder.name) &&
+        !driveFoldersHiddenFromWork.has(folder.name),
+    )
     .map((folder) => {
     const tree = readFolder(path.join(driveRoot, folder.name), folder.name, [folder.name]);
+    if (folder.name === "Rigging Stuff") {
+      const withoutFish = omitSrcs(
+        tree,
+        new Set(["/data/zain-drive/Rigging Stuff/Clown fish rig/Fish rig.mp4"]),
+      );
+      tree.children = withoutFish.children;
+    }
+    if (folder.name === "Character Models") {
+      const published = new Set([
+        "Superhero",
+        "Construction worker",
+        "Witch character",
+        "Sci-fi Character",
+        "Medical Anatomy",
+      ]);
+      tree.children = tree.children.filter((child) => child.type === "file" || !published.has(child.name));
+    }
+    if (folder.name === "Medical animation") {
+      const withoutMoved = omitSrcs(
+        tree,
+        new Set([
+          "/data/zain-drive/Medical animation/Dental surgery.mp4",
+          "/data/zain-drive/Medical animation/Human anatomy explainer.mp4",
+          "/data/zain-drive/Medical animation/Medical explainer/Foley Catheter System.mp4",
+          "/data/zain-drive/Medical animation/Blood flow animation/Blood Flow Animation.mp4",
+          "/data/zain-drive/Medical animation/Prosthetic leg.mp4",
+        ]),
+      );
+      tree.children = withoutMoved.children;
+    }
     for (const extra of extraDriveNodes(folder.name)) tree.children.push(extra);
     const files = flattenFiles(tree);
     const cover = coverItem(files);
@@ -209,6 +256,7 @@ function buildDriveProjects(): WorkProject[] {
       category: folder.category,
       summary,
       details: source?.details ?? [],
+      featured: folder.name === "Architectural Game assets",
       media: cover ? [cover] : [],
       tree,
     };
@@ -227,10 +275,6 @@ function extraDriveNodes(folderName: string): GalleryNode[] {
 }
 
 const driveProjects = buildDriveProjects();
-
-export function getDriveProjects() {
-  return driveProjects;
-}
 
 function dataFile(relativePath: string): GalleryFile {
   return {
@@ -252,17 +296,41 @@ function folderSection(name: string, relativeDir: string, include: (file: Galler
   return { type: "folder", name, children: files };
 }
 
+const showcaseOnlySrcs = new Set([
+  "/data/zain-drive/Character Animation/superhero sequence_/Cinematic Fight.mp4",
+  "/data/zain-drive/Character Animation2/Cinematic/Forest Environment/cinematic Forest.mp4",
+  "/data/zain-drive/Character Animation2/Boxing animation/Boxing.mp4",
+  "/data/zain-drive/Character Animation2/Unreal Demo with CGI_/Rendering demo.mp4",
+]);
+
+function omitSrcs(folder: GalleryFolder, blocked: Set<string>): GalleryFolder {
+  const children: GalleryNode[] = folder.children.flatMap((child): GalleryNode[] => {
+    if (child.type === "file") return blocked.has(child.src) ? [] : [child];
+    const next = omitSrcs(child, blocked);
+    return next.children.length ? [next] : [];
+  });
+  return { ...folder, children };
+}
+
+function omitShowcaseClips(folder: GalleryFolder): GalleryFolder {
+  return omitSrcs(folder, showcaseOnlySrcs);
+}
+
 function characterAnimationTree(slug: string): GalleryFolder | undefined {
   if (slug !== "character-animation") return undefined;
-  const setOne = readFolder(
-    path.join(driveRoot, "Character Animation"),
-    "Character Animation",
-    ["Character Animation"],
+  const setOne = omitShowcaseClips(
+    readFolder(
+      path.join(driveRoot, "Character Animation"),
+      "Character Animation",
+      ["Character Animation"],
+    ),
   );
-  const setTwo = readFolder(
-    path.join(driveRoot, "Character Animation2"),
-    "Character Animation 2",
-    ["Character Animation2"],
+  const setTwo = omitShowcaseClips(
+    readFolder(
+      path.join(driveRoot, "Character Animation2"),
+      "Character Animation 2",
+      ["Character Animation2"],
+    ),
   );
   return {
     type: "folder",
@@ -328,18 +396,91 @@ function modelingRigTree(slug: string): GalleryFolder | undefined {
   return undefined;
 }
 
-function metaHumanTree(slug: string): GalleryFolder | undefined {
-  if (slug !== "metahuman-and-3d-human-assets") return undefined;
+function characterModelTree(slug: string): GalleryFolder | undefined {
+  const sections: Record<string, { title: string; dir: string }> = {
+    "superhero-character": { title: "Superhero", dir: "zain-drive/Character Models/Superhero" },
+    "construction-worker-character": {
+      title: "Construction Worker",
+      dir: "zain-drive/Character Models/Construction worker",
+    },
+    "witch-character": { title: "Witch Character", dir: "zain-drive/Character Models/Witch character" },
+    "sci-fi-character": { title: "Sci-fi Character", dir: "zain-drive/Character Models/Sci-fi Character" },
+  };
+  const section = sections[slug];
+  if (!section) return undefined;
   return {
     type: "folder",
-    name: "MetaHuman and 3D Human Assets",
-    children: [
-      folderSection("Full-body human", "MetaHuman/full-body-human", () => true),
-      folderSection("Realistic male", "MetaHuman/realistic-male", () => true),
-      folderSection("Realistic female", "MetaHuman/realistic-female", () => true),
-      folderSection("Low-poly 3D human", "MetaHuman/low-poly 3d", () => true),
-    ],
+    name: section.title,
+    children: [folderSection("Gallery", section.dir, () => true)],
   };
+}
+
+function medicalTree(slug: string): GalleryFolder | undefined {
+  if (slug === "anatomy-model") {
+    return {
+      type: "folder",
+      name: "Anatomy Model",
+      children: [folderSection("Stills", "zain-drive/Character Models/Medical Anatomy", () => true)],
+    };
+  }
+  if (slug === "medical-animation-explainers") {
+    return {
+      type: "folder",
+      name: "Medical Animation & Explainers",
+      children: [
+        dataFile("zain-drive/Medical animation/Dental surgery.mp4"),
+        dataFile("zain-drive/Medical animation/Human anatomy explainer.mp4"),
+        dataFile("zain-drive/Medical animation/Medical explainer/Foley Catheter System.mp4"),
+      ],
+    };
+  }
+  if (slug === "blood-flow-animation") {
+    return {
+      type: "folder",
+      name: "Blood Flow Animation",
+      children: [dataFile("zain-drive/Medical animation/Blood flow animation/Blood Flow Animation.mp4")],
+    };
+  }
+  if (slug === "prosthetic-leg-showcase") {
+    return {
+      type: "folder",
+      name: "Prosthetic Leg Showcase",
+      children: [dataFile("zain-drive/Medical animation/Prosthetic leg.mp4")],
+    };
+  }
+  return undefined;
+}
+
+function metaHumanTree(slug: string): GalleryFolder | undefined {
+  if (slug === "metahuman-and-3d-human-assets") {
+    return {
+      type: "folder",
+      name: "MetaHuman and 3D Human Assets",
+      children: [folderSection("Full-body human", "MetaHuman/full-body-human", () => true)],
+    };
+  }
+  if (slug === "female-model") {
+    return {
+      type: "folder",
+      name: "Female Model",
+      children: [folderSection("Stills", "MetaHuman/realistic-female", () => true)],
+    };
+  }
+  if (slug === "low-poly-male-model") {
+    return {
+      type: "folder",
+      name: "Low-Poly Male Model",
+      children: [folderSection("Stills", "MetaHuman/low-poly 3d", () => true)],
+    };
+  }
+  if (slug === "realistic-male-face") {
+    return {
+      type: "folder",
+      name: "Realistic Male Face",
+      children: [folderSection("Stills", "MetaHuman/realistic-male", () => true)],
+    };
+  }
+  return undefined;
 }
 
 function vrProjectTree(slug: string): GalleryFolder | undefined {
@@ -458,7 +599,7 @@ function aiAssistedTree(slug: string): GalleryFolder | undefined {
   if (slug === "dorcas-med-animation") {
     return readFolder(
       path.join(driveRoot, "Dorcas Med animation"),
-      "Dorcas Med animation",
+      "Medical product animation",
       ["Dorcas Med animation"],
     );
   }
@@ -469,7 +610,7 @@ function ritaTree(slug: string): GalleryFolder | undefined {
   if (slug !== "rita-ai-scenes") return undefined;
   return {
     type: "folder",
-    name: "Rita AI scenes",
+    name: "AI-assisted Parasite scenes",
     children: [
       folderSection("Monster", "imran-drive/Rita AI scenes/Monster", () => true),
       folderSection("Prom", "imran-drive/Rita AI scenes/Prom", () => true),
@@ -495,19 +636,53 @@ function ritaTree(slug: string): GalleryFolder | undefined {
   };
 }
 
+function unrealVrShowcaseTree(slug: string): GalleryFolder | undefined {
+  if (slug === "unreal-character-demo") {
+    return {
+      type: "folder",
+      name: "Unreal Character Demo",
+      children: [dataFile("zain-drive/Character Animation2/Unreal Demo with CGI_/Rendering demo.mp4")],
+    };
+  }
+  if (slug !== "unreal-realtime-and-vr") return undefined;
+  return {
+    type: "folder",
+    name: "Unreal Engine real-time & VR",
+    children: [
+      folderSection("Interiors", "zain-drive/VR work/Interior", (file) => file.kind === "video"),
+      folderSection("Industrial bench", "zain-drive/VR work/Industrial bench", () => true),
+      folderSection("Mobile VR", "zain-drive/VR work/Mobile game experience", () => true),
+      folderSection("Game development", "zain-drive/VR work/3D develop for game_", () => true),
+      folderSection("Animal", "zain-drive/VR work/Animal", () => true),
+      {
+        type: "folder",
+        name: "Logo animations",
+        children: [
+          dataFile("zain-drive/VR work/Mermaid logo.mp4"),
+          dataFile("zain-drive/VR work/Shark logo.mp4"),
+        ],
+      },
+    ],
+  };
+}
+
 function attachCuratedTree(project: Project): WorkProject {
   const folder = gameCharacterFolders[project.slug];
   if (folder) {
+    const label = gameCharacterGalleryLabels[project.slug] ?? folder;
     return {
       ...project,
-      tree: readFolder(path.join(driveRoot, folder), folder, [folder]),
+      tree: readFolder(path.join(driveRoot, folder), label, [folder]),
     };
   }
   const tree =
     characterAnimationTree(project.slug) ??
+    characterModelTree(project.slug) ??
+    medicalTree(project.slug) ??
     modelingRigTree(project.slug) ??
     metaHumanTree(project.slug) ??
     vrProjectTree(project.slug) ??
+    unrealVrShowcaseTree(project.slug) ??
     architectureShowcaseTree(project.slug) ??
     aiAssistedTree(project.slug) ??
     ritaTree(project.slug);
@@ -521,10 +696,4 @@ export function getWorkProjects() {
 
 export function getWorkProject(slug: string) {
   return getWorkProjects().find((project) => project.slug === slug);
-}
-
-export function workProjectsByCategory(id: CategoryId) {
-  const curated = curatedProjects.filter((project) => project.category === id);
-  const drive = driveProjects.filter((project) => project.category === id);
-  return [...curated, ...drive];
 }

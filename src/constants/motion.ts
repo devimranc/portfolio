@@ -8,19 +8,5 @@ export const ACCENT_GRADIENTS = [
 ] as const;
 
 export const STACK_SCALE_STEP = 0.05;
-export const STACK_SCROLL_VH = 88;
-export const STACK_OFFSET_REM = 1.25;
 
 export const TILT_SPRING: Transition = { stiffness: 200, damping: 18 };
-export const TILT_RANGE = {
-  x: [10, -10] as [number, number],
-  y: [-14, 14] as [number, number],
-};
-export const TRACK_SPRING: Transition = { stiffness: 60, damping: 20 };
-
-export const MARQUEE = {
-  forward: "[--duration:35s] [--gap:1rem]",
-  reverse: "[--duration:40s] [--gap:1rem] mt-3",
-  reviews: "[--duration:32s] [--gap:1rem]",
-  reviewsReverse: "[--duration:38s] [--gap:1rem]",
-} as const;

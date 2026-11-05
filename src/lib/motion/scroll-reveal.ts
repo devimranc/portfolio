@@ -312,7 +312,7 @@ export function createScrollRevealContext(root: HTMLElement) {
     });
 
     root.querySelectorAll<HTMLElement>("[data-parallax]").forEach((el) => {
-      if (el.classList.contains("home-hero") || el.closest(".hero-character-slot")) return;
+      if (el.classList.contains("home-hero")) return;
       const depth = Number(el.dataset.parallax ?? "0.12");
       gsap.fromTo(
         el,

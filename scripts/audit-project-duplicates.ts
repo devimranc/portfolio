@@ -34,6 +34,9 @@ const showcaseSlugs = [
   "infiltration-sequence",
   "short-monologue",
   "character-in-an-epic-environment",
+  "cinematic-fight-scene",
+  "cinematic-forest-environment",
+  "boxing-scene-animation",
 ];
 for (const slug of showcaseSlugs) {
   const p = projects.find((x) => x.slug === slug);

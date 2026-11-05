@@ -43,7 +43,6 @@ body:has(.project-page) .site-footer {
   line-height: 1.1;
 }
 
-.project-category,
 .project-count {
   margin: 0.45rem 0 0;
   color: #9aafc4;
@@ -94,13 +93,6 @@ body:has(.project-page) .site-footer {
 .project-side-nav a[aria-current="page"] {
   background: rgba(213, 222, 234, 0.1);
   color: #f4f6f8;
-}
-
-.project-category-link {
-  width: fit-content;
-  margin-top: 0.4rem;
-  color: #d5deea;
-  font-size: 0.88rem;
 }
 
 .project-stage {

@@ -135,10 +135,3 @@ const useStagedFlag = (stage: number, test: () => boolean) => {
  */
 export const useDeferred3D = (stage = 0): boolean =>
   useStagedFlag(stage, () => isCapableDevice() && hasHardwareWebGL());
-
-/**
- * Gates the decorative parallax images. They are plain layers moved by
- * composited transforms, so they only need a wide viewport and a device with
- * some headroom - not a GPU that can carry a WebGL scene.
- */
-export const useDeferredLayers = (): boolean => useStagedFlag(0, isCapableDevice);

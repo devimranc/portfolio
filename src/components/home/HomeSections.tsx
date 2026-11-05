@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { ProjectMedia } from "@/components/work/ProjectMedia";
 import { categoryLabel, services, type CategoryId, type Project } from "@/data/portfolio";
@@ -38,12 +37,12 @@ function Arrow() {
 }
 
 const practiceLinks: { href: string; label: string; icon: "cube" | "user" | "vr" | "screen" | "building" | "spark" }[] = [
-  { href: "/work/category/character-modeling", label: "3D Modeling & Rigging", icon: "cube" },
-  { href: "/work/category/metahuman", label: "MetaHuman & 3D Assets", icon: "user" },
-  { href: "/work/category/vr-project", label: "VR Project", icon: "vr" },
-  { href: "/work/category/product-animation", label: "Product Animation", icon: "screen" },
-  { href: "/work/category/architecture", label: "Architectural Viz", icon: "building" },
-  { href: "/work/category/ai-video", label: "AI Video & Animation", icon: "spark" },
+  { href: "/work?category=ai-video", label: "AI Video & Animation", icon: "spark" },
+  { href: "/work?category=character-modeling", label: "3D Modeling & Rigging", icon: "cube" },
+  { href: "/work?category=metahuman", label: "MetaHuman & 3D Assets", icon: "user" },
+  { href: "/work?category=vr-project", label: "VR Project", icon: "vr" },
+  { href: "/work?category=product-animation", label: "Product Animation", icon: "screen" },
+  { href: "/work?category=architecture", label: "Architectural Viz", icon: "building" },
 ];
 
 function PracticeIcon({ icon }: { icon: (typeof practiceLinks)[number]["icon"] }) {
@@ -134,67 +133,6 @@ export function WorkStack({ projects }: { projects: Project[] }) {
           </StackCard>
         );
       })}
-    </div>
-  );
-}
-
-export function ProjectStrip({ projects }: { projects: Project[] }) {
-  const [index, setIndex] = useState(0);
-  const total = projects.length;
-  if (!total) return null;
-
-  const windowSize = Math.max(total, 5);
-  const slides = Array.from({ length: windowSize }, (_, offset) => projects[(index + offset) % total]);
-
-  return (
-    <div className="home-carousel">
-      <button
-        type="button"
-        className="home-carousel-arrow prev"
-        aria-label="Previous projects"
-        onClick={() => setIndex((current) => (current - 1 + total) % total)}
-      >
-        <Arrow />
-      </button>
-      <div className="home-carousel-window">
-        <div className="home-carousel-track">
-          {slides.map((project, offset) => {
-            const cover = project.media[0];
-            return (
-              <Link
-                key={`${project.slug}-${offset}`}
-                href={`/work/${project.slug}`}
-                className="home-carousel-card"
-              >
-                <div className="home-carousel-media" data-fluid>
-                  {cover ? <ProjectMedia item={cover} cover /> : null}
-                </div>
-                <p>{labelFor(project.category)}</p>
-                <h3>{project.title}</h3>
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-      <button
-        type="button"
-        className="home-carousel-arrow next"
-        aria-label="Next projects"
-        onClick={() => setIndex((current) => (current + 1) % total)}
-      >
-        <Arrow />
-      </button>
-      <div className="home-carousel-dots" role="tablist" aria-label="Selected work pages">
-        {projects.map((project, dot) => (
-          <button
-            key={project.slug}
-            type="button"
-            aria-label={`Show ${project.title}`}
-            aria-current={dot === index}
-            onClick={() => setIndex(dot)}
-          />
-        ))}
-      </div>
     </div>
   );
 }

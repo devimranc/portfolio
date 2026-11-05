@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { mediaSrc } from "@/components/work/ProjectMedia";
-import { categoryLabel, type MediaItem } from "@/data/portfolio";
+import { type MediaItem } from "@/data/portfolio";
 import { projectRichText } from "@/components/work/projectRichText";
 import type { GalleryFile, GalleryFolder, WorkProject } from "@/data/zain-drive";
 import "@/styles/project-detail.css";
@@ -243,7 +243,6 @@ export function ProjectGallery({ project, asset }: { project: WorkProject; asset
             Back to Work
           </Link>
           <h1>{project.title}</h1>
-          <p className="project-category">{categoryLabel(project.category)}</p>
           <p className="project-count">
             {totalFiles} {totalFiles === 1 ? "file" : "files"}
           </p>
@@ -270,9 +269,6 @@ export function ProjectGallery({ project, asset }: { project: WorkProject; asset
             ))}
           </nav>
         </div>
-        <Link href={`/work/category/${project.category}`} className="project-category-link">
-          {categoryLabel(project.category)}
-        </Link>
       </aside>
 
       <section className="project-stage">

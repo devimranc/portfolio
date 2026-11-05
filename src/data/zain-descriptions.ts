@@ -21,16 +21,16 @@ export const zainDescriptions: Record<string, string> = {
   Card: "Trading-card motion, with a card-game reveal and a trading-card animation.",
   CGI: "CGI product clips: a cold can, a sandal, and a product animation.",
   "Character Animation":
-    "Character performance clips covering clothing, fighting with VFX, a horse, shotgun recoil, a superhero sequence, and a Monty Python-style shot.",
+    "Character performance clips covering clothing, fighting with VFX, a horse, shotgun recoil, and a Monty Python-style shot.",
   "Character Animation2":
-    "A second character-animation set with boxing, idles, clothing, a cinematic, a horse, and an Unreal rendering demo.",
+    "A second character-animation set with idles, clothing, a short superhero cinematic, and a horse.",
   "Character Models":
-    "Character stills and a few clips, from realistic humans and a male face to cartoon, fantasy, sci-fi, superhero, witch, animal, and anatomy models.",
+    "Character stills and a few clips, from cartoon and fantasy characters to animal and anatomy models.",
   "Christian SaaS explainer":
     "A storyboard PDF for a Christian SaaS explainer.",
   "Dice animation": "A single dice-roll animation.",
   "Dorcas Med animation":
-    "Medical product animation for MedBeads and MedDefender, with shot clips, stills, a script, and an audio track.",
+    "Medical product animation with shot clips, stills, a script, and an audio track.",
   "Electric animation":
     "Two electrical clips: a circuit and a switchboard.",
   "Emoji reaction":
@@ -60,7 +60,7 @@ export const zainDescriptions: Record<string, string> = {
   Mascot:
     "A mascot still and a graphic-work PDF for the mascot.",
   "Medical animation":
-    "Medical explainer clips covering blood flow, dental surgery, human anatomy, a kidney, a Foley catheter, and a prosthetic leg.",
+    "Medical animation clips that remain with this set, including a kidney explainer.",
   "Motion design": "A fluid-motion design clip.",
   Packaging:
     "Packaging stills for a cookie pouch, food package, sachet, sauce pouch, and takeaway bag, plus one animation.",
@@ -72,7 +72,7 @@ export const zainDescriptions: Record<string, string> = {
   "Product Viz Image":
     "Product visualization stills of a crimson mug, energy drinks, and a serum.",
   "Rigging Stuff":
-    "Rig previews for characters and props, including a cartoon figure, bird, car, fish, dinosaur, face, gun, arm, and tiger.",
+    "Rig previews for characters and props, including a cartoon figure, bird, car, dinosaur, face, gun, arm, and tiger.",
   "Robotic animation":
     "Robot clips: a little robot, a robot drone, and a robot with expression.",
   "SaaS Explainer Video":
@@ -97,7 +97,7 @@ export const zainDescriptions: Record<string, string> = {
   Visualization:
     "Architectural walkthroughs, including a mansion flythrough, a gym, a modern house, an interior, a villa exterior, a yacht, and a configured environment.",
   "VR work":
-    "Real-time and VR scenes, including a photo studio, interiors, animals, Magnus, a mobile game experience, and a test build.",
+    "Real-time and VR scenes, including a photo studio, interiors, animals, a mobile game experience, and a test build.",
   Warehouses:
     "Visualization stills of a company warehouse and a lab.",
   Waterfall:

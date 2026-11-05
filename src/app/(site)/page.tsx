@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ContactButton } from "@/components/contact/ContactProvider";
 import {
@@ -8,10 +9,9 @@ import {
   ScrollAurora,
 } from "@/components/background";
 import { HeroAmbient } from "@/components/home/HeroAmbient";
-import { PracticeMarquee, ProjectStrip, ServicesTimeline, WorkStack } from "@/components/home/HomeSections";
-import { projects } from "@/data/portfolio";
+import { PracticeMarquee, ServicesTimeline, WorkStack } from "@/components/home/HomeSections";
+import { getWorkProjects } from "@/data/zain-drive";
 import { HomeIntro } from "@/components/home/HomeIntro";
-import { HeroCharacterSlot } from "@/components/hero-character/HeroCharacterSlot";
 
 export const metadata: Metadata = {
   title: {
@@ -19,7 +19,17 @@ export const metadata: Metadata = {
   },
 };
 
-const featured = projects.filter((project) => project.featured);
+const featuredOrder = [
+  "dragon-game-art",
+  "zain-architectural-game-assets",
+  "superhero-character",
+];
+
+const work = getWorkProjects();
+const featured = featuredOrder.flatMap((slug) => {
+  const project = work.find((item) => item.slug === slug);
+  return project ? [project] : [];
+});
 
 function Arrow() {
   return (
@@ -66,7 +76,16 @@ export default function HomePage() {
     <main data-motion-root>
       <section id="home" data-bg-anchor className="home-hero relative h-[100vh] overflow-hidden">
         <HeroAmbient />
-        <HeroCharacterSlot />
+        <div className="hero-visual" aria-hidden>
+          <Image
+            src="/hero-img.png"
+            alt=""
+            fill
+            priority
+            sizes="(max-width: 767px) 100vw, 46vw"
+            className="hero-visual-img"
+          />
+        </div>
         <div className="site-wrap relative z-10 flex h-full items-center py-16 md:py-20">
         <div className="hero-copy grid w-full gap-5">
         <p className="reveal text-[13px] font-medium tracking-[0.32em] text-white/60" style={{ animationDelay: "0.05s" }}>
@@ -133,7 +152,6 @@ export default function HomePage() {
             <Arrow />
           </Link>
         </div>
-        <ProjectStrip projects={featured} />
         <WorkStack projects={featured} />
       </section>
 
@@ -162,10 +180,10 @@ export default function HomePage() {
               About
             </h2>
             <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/65">
-              Imran Chaudhry is a 3D animator and motion designer based in
-              Bolingbrook, Illinois. His work covers character rigging and
-              animation, product visualization, architectural visualization,
-              Unreal Engine, VR, and AI-assisted video.
+              I am a 3D animator and motion designer based in Bolingbrook,
+              Illinois. My work covers character rigging and animation, product
+              visualization, architectural visualization, Unreal Engine, VR, and
+              AI-assisted video.
             </p>
             <Link href="/about" className="home-text-link mt-5 text-sm">
               Read more
